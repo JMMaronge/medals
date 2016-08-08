@@ -6,7 +6,9 @@
 #' @param mpower A scalar specifying the highest moment wanted for the MEDALS analysis. (Should be at least 1)
 #' @keywords MEDALS, Sufficiency, Segmentation
 #' @export
-#' @import fslr, ANTsR, extrantsr
+#' @import fslr
+#' @import ANTsR
+#' @import extrantsr
 #' @examples
 #' imaging.suff.stat()
 

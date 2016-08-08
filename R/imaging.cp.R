@@ -7,7 +7,9 @@
 #' @param sd.vec A vector of column standard deviations of $X$. This will be used to scale columns before the PCA.
 #' @keywords MEDALS, PCA, Segmentation
 #' @export
-#' @import fslr, ANTsR, extrantsr
+#' @import fslr
+#' @import ANTsR
+#' @import extrantsr
 #' @examples
 #' imaging.cp()
 
