@@ -15,15 +15,15 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower){
   SOS.mat<-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
-    img.mask<-readnii(path.mask.list[[i]])
-    ants.mask<-check_ants(img.mask)
+    img.mask<-fslr::readnii(path.mask.list[[i]])
+    ants.mask<-extrantsr::check_ants(img.mask)
     img.list<-vector(mode = "list",length=length(path.img.list[[1]]))
     dat.list<-vector(mode = "list",length=mpower)
     for(j in 1:length(path.img.list[[1]])){
       img.list[[j]]<-readnii(path.img.list[[i]][[j]])
-      ants.img<-check_ants(img.list[[j]])
+      ants.img<-extrantsr::check_ants(img.list[[j]])
       for (k in 1:mpower){
-        dat.list[[k]][[j]]<-t(neighborhood(img=ants.img,
+          dat.list[[k]][[j]]<-t(extrantsr::neighborhood(img=ants.img,
                                            mask=ants.mask,
                                            radius = rep(1,3),
                                            boundary.condition="mean")[[1]]^k)
