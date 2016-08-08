@@ -3,4 +3,5 @@
 export(imaging.cp.mat)
 export(imaging.suff.stat)
 export(make.pred.img)
+export(make.score.img)
 export(pc.var)

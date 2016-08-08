@@ -129,7 +129,7 @@ path.img<-list(list("~/Desktop/images_ISLES2015/training/flairTrimmedNormImg_Sub
                list("~/Desktop/images_ISLES2015/training/flairTrimmedNormImg_Subject06.nii.gz","~/Desktop/images_ISLES2015/training/t1TrimmedNormImg_Subject06.nii.gz"))
 
 path.mask<-list("~/Desktop/images_ISLES2015/training/brainmask_Subject05.nii.gz","~/Desktop/images_ISLES2015/training/brainmask_Subject06.nii.gz")
-
+path.y<-list("~/Desktop/images_ISLES2015/training/ymask_Subject05.nii.gz","~/Desktop/images_ISLES2015/training/ymask_Subject06.nii.gz")
 system.time({
 test.stat<- imaging.suff.stat(path.img,path.mask)
 })

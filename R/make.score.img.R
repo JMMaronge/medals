@@ -5,6 +5,7 @@
 #' @param path.mask.list A list of paths to the brain mask for each subject. This should be in the same order as the sublists for path.img.list
 #' @param cov.mat The crossproduct matrix ($X^TX$) for decomposition to create score images. Should be the output of imaging.cp.mat()
 #' @param which.scores A vector of the score images desired for each subject. Ex. 1:8.
+#' @export
 #' @examples
 #' make.score.img()
 
