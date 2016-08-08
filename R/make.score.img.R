@@ -6,6 +6,7 @@
 #' @param cov.mat The crossproduct matrix ($X^TX$) for decomposition to create score images. Should be the output of imaging.cp.mat()
 #' @param which.scores A vector of the score images desired for each subject. Ex. 1:8.
 #' @export
+#' @import fslr, ANTsR, extrantsr
 #' @examples
 #' make.score.img()
 

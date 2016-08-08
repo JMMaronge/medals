@@ -7,6 +7,7 @@
 #' @param subj.id A vector of subject identifiers.
 #' @keywords MEDALS, Prediction
 #' @export
+#' @import fslr, ANTsR, extrantsr
 #' @examples
 #' make.pred.img()
 
