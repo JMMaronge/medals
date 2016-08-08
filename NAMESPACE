@@ -2,3 +2,5 @@
 
 export(imaging.cp.mat)
 export(imaging.suff.stat)
+export(make.pred.img)
+export(pc.var)

@@ -8,7 +8,7 @@
 #' @keywords MEDALS, PCA, Segmentation
 #' @export
 #' @examples
-#' imaging.suff.stat()
+#' imaging.cp()
 
 imaging.cp.mat<-function(path.img.list,path.mask.list,mean.vec,sd.vec){
   require(ANTsR)
