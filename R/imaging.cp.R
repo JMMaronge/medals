@@ -11,9 +11,6 @@
 #' imaging.cp()
 
 imaging.cp.mat<-function(path.img.list,path.mask.list,mean.vec,sd.vec){
-  require(ANTsR)
-  require(extrantsr)
-  require(fslr)
   final.x<-matrix(0,nrow = length(mean.vec),ncol = length(mean.vec))
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))

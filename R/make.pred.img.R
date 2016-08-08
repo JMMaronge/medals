@@ -12,7 +12,6 @@
 
 
 make.pred.img<-function(score.img.list,path.mask.list,path.y.list,subj.id){
-require(fslr)
 df.list <- vector(mode = "list", length =length(path.mask.list))
   
 for(i in 1:length(path.mask.list)){

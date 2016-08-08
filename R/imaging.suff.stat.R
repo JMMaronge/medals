@@ -10,9 +10,6 @@
 #' imaging.suff.stat()
 
 imaging.suff.stat<-function(path.img.list,path.mask.list,mpower){
-  require(ANTsR)
-  require(extrantsr)
-  require(fslr)
   mean.mat<-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))
   n.mat <-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))
   SOS.mat<-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))

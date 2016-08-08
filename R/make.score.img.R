@@ -11,9 +11,7 @@
 
 
 make.score.img<-function(path.img.list,path.mask.list,cov.mat,which.scores){
-  require(ANTsR)
-  require(extrantsr)
-  require(fslr)
+
   score.imgs<-vector(mode = "list",length = length(path.img.list))
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
