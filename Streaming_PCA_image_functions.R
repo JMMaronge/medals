@@ -123,7 +123,6 @@ get.var.cot
   
   
 
-~/Desktop/images_ISLES2015/training/t1TrimmedNormImg_Subject05.nii.gz
 
 #testing
 path.img<-list(list("~/Desktop/images_ISLES2015/training/flairTrimmedNormImg_Subject05.nii.gz","~/Desktop/images_ISLES2015/training/t1TrimmedNormImg_Subject05.nii.gz"),

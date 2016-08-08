@@ -10,7 +10,7 @@
 
 pc.var<-function(mat,n){
   var.pc<-svd(mat)$d/(n-1)
-  cumvar<-cumsum(var)/sum(var)
+  cumvar<-cumsum(var.pc)/sum(var.pc)
   out<-list(var.pc,cumvar)
   return(out)
 }
