@@ -36,7 +36,7 @@ dat$pred<-predict(fit,type="response")
 pred.img.list<-vector(mode = "list", length =length(subj.id))
   for(i in 1:length(subj.id)){
     vec<-dat$pred[dat$id==subj.id[i]]
-    mask<- readnii(mask.file.path[[i]])
+    mask<- readnii(path.mask.list[[i]])
     pred.tmp<-remake_img(vec,mask,mask)
     pred.img.list[[i]]<-pred.tmp
   }
