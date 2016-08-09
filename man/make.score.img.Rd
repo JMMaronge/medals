@@ -4,14 +4,14 @@
 \alias{make.score.img}
 \title{A function to create score images for each subject for MEDALS.}
 \usage{
-make.score.img(path.img.list, path.mask.list, cov.mat, which.scores)
+make.score.img(path.img.list, path.mask.list, loads, which.scores)
 }
 \arguments{
 \item{path.img.list}{A list of sublists, where each sublist is a list of paths to the files for each imaging modality (ex. T1w, T2w, DWI, etc.) for a particular subject. This has to contain at least one sublist}
 
 \item{path.mask.list}{A list of paths to the brain mask for each subject. This should be in the same order as the sublists for path.img.list}
 
-\item{cov.mat}{The crossproduct matrix ($X^TX$) for decomposition to create score images. Should be the output of imaging.cp.mat()}
+\item{loads}{The loadings matrix to rotate original data by.}
 
 \item{which.scores}{A vector of the score images desired for each subject. Ex. 1:8.}
 }

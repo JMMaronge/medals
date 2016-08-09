@@ -4,7 +4,7 @@
 \alias{imaging.suff.stat}
 \title{A function to calculate sufficient statistics for MEDALS}
 \usage{
-imaging.suff.stat(path.img.list, path.mask.list, mpower)
+imaging.suff.stat(path.img.list, path.mask.list, mpower = 4)
 }
 \arguments{
 \item{path.img.list}{A list of sublists, where each sublist is a list of paths to the files for each imaging modality (ex. T1w, T2w, DWI, etc.) for a particular subject. This has to contain at least one sublist}
