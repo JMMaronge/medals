@@ -72,7 +72,7 @@ Notice that this outputs as a list of sublists, even if there's one subject. So 
 pred<-make.pred.img(score.img.list=scores,
                     path.mask.list=mask.file.path,
                     fit=def.fit.2,
-                    subj.id="01")
+                    subj.id=subj)
 ```
 
 Notice this outputs a list in this case of length 1.  An example of what the prediction image looks like for this subject courtesy of [John Muschelli](http://johnmuschelli.com)'s [fslr package](https://github.com/muschellij2/fslr)...
