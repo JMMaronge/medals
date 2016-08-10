@@ -26,11 +26,11 @@ get.model.fit<-function(score.img.list,path.mask.list,path.y.list,subj.id){
     }
     dat<-do.call("cbind",dat)
     subj.df<- data.frame(dat,stringsAsFactors = FALSE)
-    subj.df$id <-subj.id[i]
     subj.df$y <- y.img[mask==1] 
+    subj.df$id <-subj.id[i]
     df.list[[i]] <- subj.df 
   }
   dat<-do.call("rbind", df.list)
-  fit<-glm(data=dat,formula=y~.-id,family="binomial")
+  fit<-glm(data=dat[,1:(ncol(dat)-1)],formula=y~.,family="binomial")
   return(fit)
 }
