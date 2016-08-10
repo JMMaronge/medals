@@ -18,16 +18,12 @@ make.score.img<-function(path.img.list,path.mask.list,loads=def.loads,which.scor
   score.imgs<-vector(mode = "list",length = length(path.img.list))
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
-    img.mask<-readnii(path.mask.list[[i]])
-    ants.mask<-check_ants(img.mask)
-    img.list<-vector(mode = "list",length=length(path.img.list[[1]]))
+    f.mask<-path.mask.list[[i]]
     dat.list<-vector(mode = "list",length=nrow(loads)/27/length(path.img.list[[1]]))
     for(j in 1:length(path.img.list[[1]])){
-      img.list[[j]]<-readnii(path.img.list[[i]][[j]])
-      ants.img<-check_ants(img.list[[j]])
       for (k in 1:(nrow(loads)/27/length(path.img.list[[1]]))){
-        dat.list[[k]][[j]]<-t(neighborhood(img=ants.img,
-                                           mask=ants.mask,
+        dat.list[[k]][[j]]<-t(neighborhood(img=path.img.list[[i]][[j]],
+                                           mask=f.mask,
                                            radius = rep(1,3),
                                            boundary.condition="mean")[[1]]^k)
       }

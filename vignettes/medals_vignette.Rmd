@@ -71,7 +71,7 @@ Notice that this outputs as a list of sublists, even if there's one subject. So 
 ```{r, echo=TRUE}
 pred<-make.pred.img(score.img.list=scores,
                     path.mask.list=mask.file.path,
-                    fit=def.fit,
+                    fit=def.fit.2,
                     subj.id=subj)
 ```
 
