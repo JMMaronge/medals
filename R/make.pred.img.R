@@ -29,7 +29,7 @@ for(i in 1:length(path.mask.list)){
     df.list[[i]] <- subj.df 
   }
 dat<-do.call("rbind", df.list)
-dat$pred<-predict(fit,dat,type="response")
+dat$pred<-predict(fit,dat[,1:(ncol(dat)-1)],type="response")
 pred.img.list<-vector(mode = "list", length =length(subj.id))
   for(i in 1:length(subj.id)){
     vec<-dat$pred[dat$id==subj.id[i]]
