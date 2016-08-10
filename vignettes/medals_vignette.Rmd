@@ -1,0 +1,66 @@
+---
+title: "medals Vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{medals Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+Hi everyone! The purpose of this vignette is to give a (hopefully) easy to understand tutorial on how to use my new package, medals! As you may know, my package is available [here](https://github.com/JMMaronge/medals). medals is a R package to implement a new method I've been working on for lesion segmentation, which I'm calling MEDALS: Memory Efficient Decomposition for Analysis of Local neighborhood moments for Segmentation.  There are two ways to use this package:
+
+- Use the default settings, which is from the dataset I trained to, this is only recommended if you don't have any manual segmentations to train your own model.
+
+- Have manual segmentation done on a (small) subset of your subjects. Then train your model to that small subset, and predict on the remainder of subjects. (Recommended)
+
+Depending on which way you plan to use medals, the implentation of the package would be a bit different, but I will go through both here. 
+
+<!-- but first, a little about MEDALS. -->
+
+<!-- MEDALS is a method for segmentation which essentially works by doing a global PCA to a series of subjects with multimodal (ex. FLAIR, T1w, T2w, DWI)  MRI. The method works by looking at each voxel in the series of subjects and recording the intensity of that particular voxel and the intensities of its local neighbors for every image in the sequence. Currently we only look at adjacent neighbors, so the $3 \times 3 \times 3$ cube around the voxel of interest.  As an example, for voxel $v_i$ we would record that voxel and the 26 values adjacent to that voxel, we take the same voxel in the other modalities in do the same. We also take higher moments of the imaging sequence and record the intensities of the same voxels in those therefore we have $(27) \times (number_of_imaging_sequences) \times (number_of_moments)$ values. We string those values into a row-vector and do the same for every voxel in the brain mask across all subjects. We then do a PCA decomposition on this **big** matrix $X$. We create scores from the loadings matrix given by the decomposition, and use those scores as predictors in a logistic regression model where the outcome is a manual segmentation. -->
+
+<!-- One problem is the matrix that the decomposition is done on can take a huge amount of memory, so we had to devise a way to read the matrix in parts to do the calculations. This is why it is memory efficient. That  will be covered in more detail in the publication. -->
+
+<!-- Therefore, to predict lesions using medals you need two things, a loadings matrix from the decomposition and beta estimates from the regression model. There are defaults for these given in the package, which I've called def.loads and def.fit, but again, you can also train your own. -->
+
+###Assuming you aren't training your own model
+I will start assuming you are using the default settings.  This will be a little simpler as you only need to worry yourself with 2 functions, make.score.img() and make.pred.img().
+
+First we load up the package.
+```{r,echo=TRUE}
+###library(devtools)  ### need devtools for install_github()
+###install_github("jmmaronge/medals") ###install package
+library(medals)
+```
+
+I devised medals in a way such that each function does one step of the analysis. So, make.score.img() will make predictors for a subject (or subjects) you wish to test on. The trick is, you need the same imaging sequences I used in training (FLAIR, T1w, T2w, DWI). To show an example I'll use a subject from my testing set. 
+
+First, we need to make a list for each subject with a sublist containing the paths to each image in the sequence for that subject.  We also need a list containing the brain mask for each subject. I'll use a subject from my testing set. The lists should look something like this...
+
+```{r, echo=FALSE}
+dir<-"~/Desktop/images_ISLES2015/testing/"
+subj<-c("25")
+
+image.file.path<-vector(length = length(subj), mode = "list")
+mask.file.path<-vector(length = length(subj), mode = "list")
+for(i in 1:length(subj)){
+  image.file.path[[i]][[1]]<-paste0(dir,"t1TrimmedNormImg_Subject",subj[i],".nii.gz")  
+  image.file.path[[i]][[2]]<-paste0(dir,"t2TrimmedNormImg_Subject",subj[i],".nii.gz")  
+  image.file.path[[i]][[3]]<-paste0(dir,"flairTrimmedNormImg_Subject",subj[i],".nii.gz")  
+  image.file.path[[i]][[4]]<-paste0(dir,"dwiTrimmedNormImg_Subject",subj[i],".nii.gz") 
+  mask.file.path[[i]]<-paste0(dir,"brainmask_Subject",subj[i],".nii.gz")
+}
+```
+
+```{r,echo=TRUE}
+image.file.path
+mask.file.path
+```
+
+Now to makse the predictors is simple.
+
+
+
+
+
+
