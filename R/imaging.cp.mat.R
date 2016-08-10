@@ -21,7 +21,7 @@ imaging.cp.mat<-function(path.img.list,path.mask.list,mean.vec,sd.vec){
     dat.list<-vector(mode = "list",length=(length(mean.vec)/27/length(path.img.list[[1]])))
     for(j in 1:length(path.img.list[[1]])){
       for(k in 1:(length(mean.vec)/27/length(path.img.list[[1]]))){
-        dat.list[[k]][[j]]<-t(neighborhood(img=path.img.list[[i]][[j],
+        dat.list[[k]][[j]]<-t(neighborhood(img=path.img.list[[i]][[j]],
                                            mask=f.mask,
                                            radius = rep(1,3),
                                            boundary.condition="mean")[[1]]^k)
