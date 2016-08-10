@@ -4,7 +4,7 @@
 \alias{make.pred.img}
 \title{A function to make prediction images for MEDALS}
 \usage{
-make.pred.img(score.img.list, path.mask.list, fit, subj.id)
+make.pred.img(score.img.list, path.mask.list, fit = def.fit, subj.id)
 }
 \arguments{
 \item{score.img.list}{A list of sublists, where each sublist is a list of images created from the PC scores. This can be the output of make.score.img().This has to contain at least one sublist}

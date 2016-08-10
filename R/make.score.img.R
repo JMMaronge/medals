@@ -13,7 +13,7 @@
 #' make.score.img()
 
 
-make.score.img<-function(path.img.list,path.mask.list,loads,which.scores){
+make.score.img<-function(path.img.list,path.mask.list,loads=def.loads,which.scores=1:8){
 
   score.imgs<-vector(mode = "list",length = length(path.img.list))
   for(i in 1:length(path.img.list)){

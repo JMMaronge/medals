@@ -4,7 +4,8 @@
 \alias{make.score.img}
 \title{A function to create score images for each subject for MEDALS.}
 \usage{
-make.score.img(path.img.list, path.mask.list, loads, which.scores)
+make.score.img(path.img.list, path.mask.list, loads = def.loads,
+  which.scores = 1:8)
 }
 \arguments{
 \item{path.img.list}{A list of sublists, where each sublist is a list of paths to the files for each imaging modality (ex. T1w, T2w, DWI, etc.) for a particular subject. This has to contain at least one sublist}

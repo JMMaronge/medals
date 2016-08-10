@@ -14,7 +14,7 @@
 #' make.pred.img()
 
 
-make.pred.img<-function(score.img.list,path.mask.list,fit,subj.id){
+make.pred.img<-function(score.img.list,path.mask.list,fit=def.fit,subj.id){
 df.list <- vector(mode = "list", length =length(path.mask.list))
   
 for(i in 1:length(path.mask.list)){
