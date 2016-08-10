@@ -24,7 +24,7 @@ for(i in 1:length(path.mask.list)){
       dat[[j]]<-score.img.list[[i]][[j]][mask==1]  
     }
     dat<-do.call("cbind",dat)
-    subj.df<- data.frame(dat)
+    subj.df<- data.frame(dat,stringsAsFactors = FALSE)
     subj.df$id <-subj.id[i]
     df.list[[i]] <- subj.df 
   }
