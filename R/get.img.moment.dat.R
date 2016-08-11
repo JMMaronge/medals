@@ -32,7 +32,6 @@ get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
         # dat.list[[k]][[j]]<-vals^k
       }
       rm(list= "vals");
-      gc()
     return(x_i)
     }
 }    
