@@ -13,7 +13,7 @@
 #' get.img.moment.dat()
 
 get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
-  nmod.power = 27*length(path.img.list[[1]])*mpower
+  nmod.power = 27*length(imgs.path)*mpower
     f.mask<-path.mask.list[[i]]
     mask = antsImageRead(f.mask)
     n = sum(mask)
