@@ -32,7 +32,7 @@ get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
         # dat.list[[k]][[j]]<-vals^k
       }
       rm(list= "vals");
-      eval(gc(),.GlobalEnv)
+      eval(gc(),parent.env())
     return(x_i)
     }
 }    
