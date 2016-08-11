@@ -13,9 +13,10 @@
 #' imaging.suff.stat()
 
 imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
+  nmod_power = 27*length(path.img.list[[1]])*mpower
   mean.mat<-matrix(NA,nrow=nmod_power,ncol=length(path.img.list))
   SOS.mat <- n.mat <- mean.mat 
-  nmod_power = 27*length(path.img.list[[1]])*mpower
+
 
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
