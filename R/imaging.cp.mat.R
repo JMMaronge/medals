@@ -19,14 +19,14 @@ imaging.cp.mat<-function(path.img.list,path.mask.list,mean.vec,sd.vec){
     print(paste0("Starting subject ",i))
     x_i<-get.img.moment.dat(path.img.list[[i]],path.mask.list[[i]],length(mean.vec)/27/length(path.img.list[[1]]))
     print("centering")
-    temp.x<-sweep(x_i,2,mean.vec,"-")
+    x_i<-sweep(x_i,2,mean.vec,"-")
+    print("scaling")
+    x_i<-sweep(x_i,2,sd.vec,"/")
+    print("calculating x^tx")
+    x_i<-crossprod(x_i)
+    final.x<-final.x+x_i
     rm(list = "x_i");
     gc() # R handles RAM funny, good to gc() after deleting
-    print("scaling")
-    temp.x<-sweep(temp.x,2,sd.vec,"/")
-    print("calculating x^tx")
-    temp.x<-crossprod(temp.x)
-    final.x<-final.x+temp.x
   }
   return(final.x)
 }
