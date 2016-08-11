@@ -13,27 +13,21 @@
 #' imaging.suff.stat()
 
 imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
-  mean.mat<-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))
-  n.mat <-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))
-  SOS.mat<-matrix(NA,nrow=27*length(path.img.list[[1]])*mpower,ncol=length(path.img.list))
+  mean.mat<-matrix(NA,nrow=nmod_power,ncol=length(path.img.list))
+  SOS.mat <- n.mat <- mean.mat 
+  nmod_power = 27*length(path.img.list[[1]])*mpower
+
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
-    f.mask<-path.mask.list[[i]]
-    dat.list<-vector(mode = "list",length=mpower)
-    for(j in 1:length(path.img.list[[1]])){
-      for (k in 1:mpower){
-          dat.list[[k]][[j]]<-t(neighborhood(img=path.img.list[[i]][[j]],
-                                           mask=f.mask,
-                                           radius = rep(1,3),
-                                           boundary.condition="mean")[[1]]^k)
-          
-      }
-    }
-    dat.list<-unlist(dat.list, recursive = FALSE)
-    x_i<-do.call("cbind",dat.list)
+    x_i<-get.img.moment.dat(path.img.list[[i]],path.mask.list[[i]],mpower)
+    # dat.list<-unlist(dat.list, recursive = FALSE)
+    # x_i<-do.call("cbind",dat.list)
+    # rm(list = "dat.list"); gc();
+    
     mean.mat[,i]<-colMeans(x_i)
     n.mat[,i]<-rep(nrow(x_i), nrow(n.mat))
     SOS.mat[,i]<-colSums(x_i^2)
+    rm(list = "x_i"); gc();
   }
   pop.mean<-rowSums(mean.mat*n.mat)/rowSums(n.mat)
   pop.sd<-sqrt((rowSums(SOS.mat)-(rowSums(mean.mat*n.mat)/rowSums(n.mat))^2*rowSums(n.mat))/(rowSums(n.mat)-1))
@@ -41,6 +35,6 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
   pop.stat$mean<-pop.mean
   pop.stat$sd<-pop.sd
   pop.stat$total.n<-rowSums(n.mat)[1]
-  gc();gc();gc();
+  gc()
   return(pop.stat)
 }
