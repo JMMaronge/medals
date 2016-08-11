@@ -24,7 +24,7 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
     # dat.list<-unlist(dat.list, recursive = FALSE)
     # x_i<-do.call("cbind",dat.list)
     # rm(list = "dat.list"); gc();
-    
+    gc()
     mean.mat[,i]<-colMeans(x_i)
     n.mat[,i]<-rep(nrow(x_i), nrow(n.mat))
     SOS.mat[,i]<-colSums(x_i^2)
