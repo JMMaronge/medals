@@ -36,6 +36,5 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
   pop.stat$mean<-pop.mean
   pop.stat$sd<-pop.sd
   pop.stat$total.n<-rowSums(n.mat)[1]
-  gc()
   return(pop.stat)
 }
