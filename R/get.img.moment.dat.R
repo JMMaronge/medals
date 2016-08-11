@@ -25,7 +25,6 @@ get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
                            mask=f.mask,
                            radius = rep(1,3),
                            boundary.condition="mean")$values)
-      gc();
       for (k in 1:mpower){
         x_i[, seq(ind + 1, ind + 27)] = vals^k
         print(k)
