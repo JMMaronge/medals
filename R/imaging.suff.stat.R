@@ -28,6 +28,7 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
     n.mat[,i]<-rep(nrow(x_i), nrow(n.mat))
     SOS.mat[,i]<-colSums(x_i^2)
     rm(list = "x_i");
+    gc() # R handles RAM funny, good to gc() after deleting
   }
   pop.mean<-rowSums(mean.mat*n.mat)/rowSums(n.mat)
   pop.sd<-sqrt((rowSums(SOS.mat)-(rowSums(mean.mat*n.mat)/rowSums(n.mat))^2*rowSums(n.mat))/(rowSums(n.mat)-1))
