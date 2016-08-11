@@ -7,79 +7,57 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-Hi everyone! The purpose of this vignette is to give a (hopefully) easy to understand tutorial on how to use my new package, medals! As you may know, my package is available [here](https://github.com/JMMaronge/medals). medals is a R package to implement a new method I've been working on for lesion segmentation, which I'm calling MEDALS: Memory Efficient Decomposition for Analysis of Local neighborhood moments for Segmentation.  There are two ways to use this package:
+Hi everyone! The purpose of this vignette is to give an easy to understand tutorial on how to use my new package, medals! As you may know, my package is available [here](https://github.com/JMMaronge/medals). medals is a R package to implement a new method I've been working on for lesion segmentation, which I'm calling MEDALS: Memory Efficient Decomposition for Analysis of Local neighborhood moments for Segmentation.  
 
-- Use the default settings, which is from the dataset I trained to, this is only recommended if you don't have any manual segmentations to train your own model.
+For this vignette, we will use the medals package to train on two subjects with multimodal MRI (T1w, T2w, FLAIR, DWI).  Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then every image is normalized using a trimmed normalization. We will analyze up to the 4th order moment image. Then we will test the fitting on a separate subject.
 
-- Have manual segmentation done on a (small) subset of your subjects. Then train your model to that small subset, and predict on the remainder of subjects. (Recommended)
-
-Depending on which way you plan to use medals, the implentation of the package would be a bit different, but I will go through both here. 
-
-<!-- but first, a little about MEDALS. -->
-
-<!-- MEDALS is a method for segmentation which essentially works by doing a global PCA to a series of subjects with multimodal (ex. FLAIR, T1w, T2w, DWI)  MRI. The method works by looking at each voxel in the series of subjects and recording the intensity of that particular voxel and the intensities of its local neighbors for every image in the sequence. Currently we only look at adjacent neighbors, so the $3 \times 3 \times 3$ cube around the voxel of interest.  As an example, for voxel $v_i$ we would record that voxel and the 26 values adjacent to that voxel, we take the same voxel in the other modalities in do the same. We also take higher moments of the imaging sequence and record the intensities of the same voxels in those therefore we have $(27) \times (number_of_imaging_sequences) \times (number_of_moments)$ values. We string those values into a row-vector and do the same for every voxel in the brain mask across all subjects. We then do a PCA decomposition on this **big** matrix $X$. We create scores from the loadings matrix given by the decomposition, and use those scores as predictors in a logistic regression model where the outcome is a manual segmentation. -->
-
-<!-- One problem is the matrix that the decomposition is done on can take a huge amount of memory, so we had to devise a way to read the matrix in parts to do the calculations. This is why it is memory efficient. That  will be covered in more detail in the publication. -->
-
-<!-- Therefore, to predict lesions using medals you need two things, a loadings matrix from the decomposition and beta estimates from the regression model. There are defaults for these given in the package, which I've called def.loads and def.fit, but again, you can also train your own. -->
-
-###Assuming you aren't training your own model
-I will start assuming you are using the default settings.  This will be a little simpler as you only need to worry yourself with 2 functions, make.score.img() and make.pred.img().
-
-First we load up the package.
-```{r,echo=TRUE}
-###library(devtools)  ### need devtools for install_github()
-###install_github("jmmaronge/medals") ###install package
-library(medals)
-```
-
-I devised medals in a way such that each function does one step of the analysis. So, make.score.img() will make predictors for a subject (or subjects) you wish to test on. The trick is, you need the same imaging sequences I used in training (FLAIR, T1w, T2w, DWI). To show an example I'll use a subject from my testing set. 
-
-First, we need to make a list for each subject with a sublist containing the paths to each image in the sequence for that subject.  We also need a list containing the brain mask for each subject. I'll use a subject from my testing set. The lists should look something like this...
+Before doing anything, we need to get our data in a particular form. We need a list of paths to MRI images, a list of paths to brain masks, and a list of paths to manual segmentations.  Below I show the structure of these lists. Images are denoted by image.file, brain masks by mask.file and manual segmentations by y.file. Notice that image.file is a list of sublists, each sublist is a list of imaging sequences for a particular subject. The orders of image.file, mask.file, and y.file should all match.
 
 ```{r, echo=FALSE}
-dir<-"~/Desktop/images_ISLES2015/testing/"
-subj<-c("25")
+dir<-"~/Desktop/images_ISLES2015/training/"
+subj<-c("05","06")
 
-image.file.path<-vector(length = length(subj), mode = "list")
-mask.file.path<-vector(length = length(subj), mode = "list")
+image.file<-vector(length = length(subj), mode = "list")
+mask.file<-vector(length = length(subj), mode = "list")
+y.file<-vector(length = length(subj), mode = "list")
+
 for(i in 1:length(subj)){
-  image.file.path[[i]][[1]]<-paste0(dir,"t1TrimmedNormImg_Subject",subj[i],".nii.gz")  
-  image.file.path[[i]][[2]]<-paste0(dir,"t2TrimmedNormImg_Subject",subj[i],".nii.gz")  
-  image.file.path[[i]][[3]]<-paste0(dir,"flairTrimmedNormImg_Subject",subj[i],".nii.gz")  
-  image.file.path[[i]][[4]]<-paste0(dir,"dwiTrimmedNormImg_Subject",subj[i],".nii.gz") 
-  mask.file.path[[i]]<-paste0(dir,"brainmask_Subject",subj[i],".nii.gz")
+image.file[[i]][[1]]<-paste0(dir,"flairTrimmedNormImg_Subject",subj[i],".nii.gz") 
+image.file[[i]][[2]]<-paste0(dir,"t1TrimmedNormImg_Subject",subj[i],".nii.gz") 
+image.file[[i]][[3]]<-paste0(dir,"t2TrimmedNormImg_Subject",subj[i],".nii.gz") 
+image.file[[i]][[4]]<-paste0(dir,"dwiTrimmedNormImg_Subject",subj[i],".nii.gz") 
+mask.file[[i]]<-paste0(dir,"brainmask_Subject",subj[i],".nii.gz")
+y.file[[i]]<-paste0(dir,"ymask_Subject",subj[i],".nii.gz")
 }
 ```
 
 ```{r,echo=TRUE}
-image.file.path
-mask.file.path
+print(image.file)
+print(mask.file)
+print(y.file)
 ```
 
-Now to make the the predictors is simple.
+The first thing we need to do is center and scale the columns of the matrix we want to perform PCA on. To do this, we will get the column mean and standard deviation for each column. This is done by using imaging.suff.stat(), as shown below
 
 ```{r,echo=TRUE,cache=TRUE}
-scores<-make.score.img(path.img.list=image.file.path,
-                       path.mask.list=mask.file.path,
-                       loads=def.loads.2,
-                       which.scores=1:8)
+#### library(devtools) ### for install_github()
+#### install_github("jmmaronge/medals") ### installing medals
+library(medals)
+suff<-imaging.suff.stat(path.img.list = image.file,
+                        path.mask.list = mask.file,
+                        mpower = 1 #### denotes highest order moment wanted
+    )
 ```
+  
+suff\$mean will return the vector of column means, suff\$sd will return a vector of column standard deviations. These will be used in the next function, imaging.cp.mat(). This function we create the cross-product matrix we want to decompose. This matrix is based off of the center and scaled $X$ matrix.
 
-Notice that this outputs as a list of sublists, even if there's one subject. So to specify the 3rd PC score you need to do scores[[1]][[3]]. Finally, to make the final prediction image.
-
-```{r, echo=TRUE}
-pred<-make.pred.img(score.img.list=scores,
-                    path.mask.list=mask.file.path,
-                    fit=def.fit.2,
-                    subj.id=subj)
-```
-
-Notice this outputs a list in this case of length 1.  An example of what the prediction image looks like for this subject courtesy of [John Muschelli](http://johnmuschelli.com)'s [fslr package](https://github.com/muschellij2/fslr)...
-
-```{r,echo=TRUE}
-library(fslr)
-ortho2(pred[[1]])
+```{r,echo=TRUE,cache=TRUE}
+cp<-imaging.cp.mat(path.img.list = image.file,
+                   path.mask.list = mask.file,
+                   mean.vec = suff$mean,
+                   sd.vec = suff$sd
+  )
+dim(cp)
 ```
 
 
