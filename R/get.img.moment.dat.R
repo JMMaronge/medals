@@ -27,7 +27,7 @@ get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
                            boundary.condition="mean")$values)
       for (k in 1:mpower){
         x_i[, seq(ind + 1, ind + 27)] = vals^k
-        print(paste0("Working on ",k,"th moment"))
+        print(paste0("Working on moment ",k))
         ind = ind + 27
         # dat.list[[k]][[j]]<-vals^k
       }
