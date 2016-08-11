@@ -26,7 +26,7 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
                                            mask=f.mask,
                                            radius = rep(1,3),
                                            boundary.condition="mean")[[1]]^k)
-          gc()
+          
       }
     }
     dat.list<-unlist(dat.list, recursive = FALSE)
@@ -41,5 +41,6 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
   pop.stat$mean<-pop.mean
   pop.stat$sd<-pop.sd
   pop.stat$total.n<-rowSums(n.mat)[1]
+  gc();gc();gc();
   return(pop.stat)
 }
