@@ -17,7 +17,7 @@ imaging.cp.mat<-function(path.img.list,path.mask.list,mean.vec,sd.vec){
   final.x<-matrix(0,nrow = length(mean.vec),ncol = length(mean.vec))
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
-    x_i<-get.img.moment.dat(path.img.list[[i]],path.mask.list[[i]],length(mean.vec)/27/length(path.img.list[[1]])))
+    x_i<-get.img.moment.dat(path.img.list[[i]],path.mask.list[[i]],length(mean.vec)/27/length(path.img.list[[1]]))
     temp.x<-sweep(x_i,2,mean.vec,"-")
     rm(list = "x_i");
     gc() # R handles RAM funny, good to gc() after deleting
