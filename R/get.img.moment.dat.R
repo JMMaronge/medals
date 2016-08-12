@@ -20,16 +20,14 @@ get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
     rm(list="mask"); gc();
     x_i = matrix(nrow = n, ncol = nmod.power)
     ind = 0
-    for(j in 1:length(imgs.path)){
+    for(j in 1:length(imgs.path)){ 
       vals<-t(neighborhood(img=imgs.path[[j]],
                            mask=f.mask,
                            radius = rep(1,3),
                            boundary.condition="mean")$values)
       for (k in 1:mpower){
         x_i[, seq(ind + 1, ind + 27)] = vals^k
-        print(paste0("Working on moment ",k))
         ind = ind + 27
-        # dat.list[[k]][[j]]<-vals^k
       }
       rm(list= "vals");
       eval(gc(),parent.frame())
