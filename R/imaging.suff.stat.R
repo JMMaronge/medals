@@ -16,7 +16,7 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
   nmod_power = 27*length(path.img.list[[1]])*mpower
   mean.mat<-matrix(NA,nrow=nmod_power,ncol=length(path.img.list))
   SOS.mat <- n.mat <- mean.mat 
-  cp.mats<- vector(mode = "list",length = length(path.img.list))
+  #cp.mats<- vector(mode = "list",length = length(path.img.list))
 
 
   for(i in 1:length(path.img.list)){
@@ -28,7 +28,7 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
     mean.mat[,i]<-colMeans(x_i)
     n.mat[,i]<-rep(nrow(x_i), nrow(n.mat))
     SOS.mat[,i]<-colSums(x_i^2)
-    cp.mats[[i]]<-crossprod(x_i)
+    #cp.mats[[i]]<-crossprod(x_i)
     rm(list = "x_i");
     gc() # R handles RAM funny, good to gc() after deleting
   }
@@ -39,6 +39,6 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
   pop.stat$sd<-pop.sd
   pop.stat$n<-n.mat[1,]
   pop.stat$total.n<-rowSums(n.mat)[1]
-  pop.stat$cp.mats<-cp.mats
+  #pop.stat$cp.mats<-cp.mats
   return(pop.stat)
 }
