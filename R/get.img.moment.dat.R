@@ -33,6 +33,21 @@ get.img.moment.dat<-function(imgs.path,mask.path,mpower=4){
       }
       rm(list= "vals");
       eval(gc(),parent.frame())
-    return(x_i)
     }
-}    
+    return(x_i)
+    
+}   
+
+M = suff$mean%*%t(suff$mean)
+S = suff$sd%*%t(suff$sd)
+
+c_i= vector(mode = "list",length=2)
+for(i in 1:2){
+  c_i[[i]] <- (suff$cp.mats[[i]]-suff$n[i]*M)/S
+}
+test<-do.call("+",c_i)
+  
+  
+  
+  
+}
