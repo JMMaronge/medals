@@ -1,17 +1,18 @@
 Package: medals
 Title: Performs Memory Efficient Decomposition for Analysis of Local
     neighborhood moments for Segmentation
-Version: 0.0.0.9000
-Authors@R: person("Jacob", "Maronge", email = "jmmaronge@gmail.com", role = c("aut", "cre"))
+Version: 0.0.1.3
+Authors@R: c(person("Jacob", "Maronge", email = "jmmaronge@gmail.com", role = c("aut", "cre")),
+  person("John", "Muschelli", role = "ctb"))
 Description: medals() performs a method which can be used for segmentation by
     implementing a decomposition of the local neighborhood moments. It is memory
     efficient in the sinse that only one image is read into memory at any given
     time.
 Depends:
     R (>= 3.3.0)
-Import: 
+Import:
     fslr,
-    ANTsR, 
+    ANTsR,
     extrantsr
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
