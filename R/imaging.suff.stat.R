@@ -12,10 +12,10 @@
 #' @examples
 #' imaging.suff.stat()
 
-imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
+imaging.suff.stat <- function(path.img.list,path.mask.list,mpower=4){
   nmod_power = 27*length(path.img.list[[1]])*mpower
   mean.mat<-matrix(NA,nrow=nmod_power,ncol=length(path.img.list))
-  SOS.mat <- n.mat <- mean.mat 
+  SOS.mat <- n.mat <- mean.mat
   cp.mats<- vector(mode = "list",length = length(path.img.list))
 
 
@@ -34,7 +34,8 @@ imaging.suff.stat<-function(path.img.list,path.mask.list,mpower=4){
   }
   pop.mean<-rowSums(mean.mat*n.mat)/rowSums(n.mat)
   pop.sd<-sqrt((rowSums(SOS.mat)-(rowSums(mean.mat*n.mat)/rowSums(n.mat))^2*rowSums(n.mat))/(rowSums(n.mat)-1))
-  pop.stat<-vector(mode = "list", length = 4)
+  # pop.stat<-vector(mode = "list", length = 4)
+  pop.stat = list()
   pop.stat$mean<-pop.mean
   pop.stat$sd<-pop.sd
   pop.stat$n<-n.mat[1,]
