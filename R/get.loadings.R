@@ -8,10 +8,10 @@
 #' @import extrantsr
 #' @examples
 #' get.loadings()
- 
+
 
 get.loadings<-function(cov.mat){
-  loadings<-svd(cov.mat)$v
+  loadings<-svd(cov.mat, nu = 0)$v
   return(loadings)
 }
 
