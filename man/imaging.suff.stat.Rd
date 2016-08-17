@@ -4,7 +4,7 @@
 \alias{imaging.suff.stat}
 \title{A function to calculate sufficient statistics for MEDALS}
 \usage{
-imaging.suff.stat(path.img.list, path.mask.list, mpower = 4)
+imaging.suff.stat(path.img.list, path.mask.list, mpower = 4, verbose = TRUE)
 }
 \arguments{
 \item{path.img.list}{A list of sublists, where each sublist is a list of paths to the files for each imaging modality (ex. T1w, T2w, DWI, etc.) for a particular subject. This has to contain at least one sublist}
@@ -12,6 +12,8 @@ imaging.suff.stat(path.img.list, path.mask.list, mpower = 4)
 \item{path.mask.list}{A list of paths to the brain mask for each subject. This should be in the same order as the sublists for path.img.list}
 
 \item{mpower}{A scalar specifying the highest moment wanted for the MEDALS analysis. (Should be at least 1)}
+
+\item{verbose}{print diagnostic messages}
 }
 \description{
 This function allows you to calculate the sufficient statistics to center and scale each column in the huge matrix X for MEDALS. This should be the first step of the MEDALS pipeline
