@@ -51,7 +51,7 @@ The first thing we need to do is center and scale the columns of the matrix we w
 #### library(devtools) ### for install_github()
 #### install_github("jmmaronge/medals") ### installing medals
 library(medals)
-suff<-imaging.suff.stat(
+suff <- imaging.suff.stat(
   path.img.list = image.file,
   path.mask.list = mask.file,
   mpower = 2 #### denotes highest order moment wanted
@@ -72,18 +72,18 @@ dim(cp)
 The next function we will use is `pc.var()`. This will gives us information about the variance and cumulative variance explained by each principal component so that we can make a decision on how many PCs to keep for prediction. The arguments this function takes are the population level cross-product matrix and the total number of voxels in the brain mask across all subjects, which is contained within the suff object that we created.
 
 ```{r, echo=TRUE}
-pc.var(cp,suff$total.n)[[1]][1:10]
-pc.var(cp,suff$total.n)[[2]][1:10]
+pc.var(cp,suff$total.n)$var[1:10]
+pc.var(cp,suff$total.n)$cum_pct[[2]][1:10]
 ```
 
 Since the first 8 PCs contain ~85% of the total variance explained in the original data, I'll choose to keep the first 8 PCs as predictors. I'll use the next function, get.loadings() to create the loadings matrix which will be used to rotate the original images into score images. I'll then use the function make.score.img() to create score images for each subject for each principal component. These will be used as predictors in the logistic regression model.
 
 ```{r,echo=TRUE,cache=TRUE}
-load <- get.loadings(cp)
+loadings <- get.loadings(cp)
 scores <- make.score.img(
   path.img.list = image.file,
   path.mask.list = mask.file,
-  loads = load,
+  loads = loadings,
   which.scores = 1:8
 )
 ```
