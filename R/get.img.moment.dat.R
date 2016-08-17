@@ -4,6 +4,7 @@
 #' @param imgs.path A list of paths to images for one subject.
 #' @param path.mask.list A path to the braiin mask for each subject.
 #' @param mpower A scalar specifying the highest moment wanted for the MEDALS analysis.
+#' @param verbose print diagnostic messages
 #' @keywords MEDALS, Sufficiency, Segmentation
 #' @export
 #' @import fslr
@@ -12,7 +13,10 @@
 #' @examples
 #' get.img.moment.dat()
 
-get.img.moment.dat <- function(imgs.path,mask.path,mpower=4){
+get.img.moment.dat <- function(imgs.path,
+                               mask.path,
+                               mpower = 4,
+                               verbose = TRUE){
   nmod.power = 27 * length(imgs.path) * mpower
   mask = check_ants(mask.path)
   n = sum(mask)
@@ -22,7 +26,8 @@ get.img.moment.dat <- function(imgs.path,mask.path,mpower=4){
     vals <- t(neighborhood(img = imgs.path[[j]],
                            mask = mask,
                            radius = rep(1,3),
-                           boundary.condition = "mean")$values
+                           boundary.condition = "mean",
+                           verbose = verbose)$values
     )
     for (k in 1:mpower) {
       x_i[, seq(ind + 1, ind + 27)] = vals^k

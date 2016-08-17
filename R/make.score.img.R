@@ -18,13 +18,16 @@ make.score.img<-function(path.img.list,path.mask.list,loads=def.loads,which.scor
   score.imgs<-vector(mode = "list",length = length(path.img.list))
   for(i in 1:length(path.img.list)){
     print(paste0("Starting subject ",i))
-    x_i<-get.img.moment.dat(path.img.list[[i]],path.mask.list[[i]],dim(loads)[1]/27/length(path.img.list[[1]]))
-    img.mask<-readnii(path.mask.list[[i]])
+    x_i<-get.img.moment.dat(
+      path.img.list[[i]],
+      path.mask.list[[i]],
+      mpower = dim(loads)[1]/27/length(path.img.list[[1]]))
+    img.maskv<- readnii(path.mask.list[[i]])
     for(l in which.scores){
-      score<-x_i%*%loads[,l]
-      img<-remake_img(score,img.mask,img.mask)
-      img[img.mask==0]=NA
-      score.imgs[[i]][[l]]<-img
+      score <- x_i%*%loads[,l]
+      img<-remake_img(vec = score, img = img.mask, mask = img.mask)
+      img[img.mask==0] = NA
+      score.imgs[[i]][[l]] <- img
     }
   }
   return(score.imgs)
