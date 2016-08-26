@@ -1,7 +1,7 @@
 Package: medals
 Title: Performs Memory Efficient Decomposition for Analysis of Local
     neighborhood moments for Segmentation
-Version: 0.0.1.3
+Version: 0.1.1.0
 Authors@R: c(person("Jacob", "Maronge", email = "jmmaronge@gmail.com", role = c("aut", "cre")),
   person("John", "Muschelli", role = "ctb"))
 Description: medals() performs a method which can be used for segmentation by
@@ -13,7 +13,8 @@ Depends:
 Import:
     fslr,
     ANTsR,
-    extrantsr
+    extrantsr,
+    dplyr
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 License: GPL-3
