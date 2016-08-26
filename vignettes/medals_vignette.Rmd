@@ -15,8 +15,8 @@ Before doing anything, we need to get our data in a particular form. We need a l
 
 ```{r, echo=TRUE}
 library(medals)
-datadir<-"~/Desktop/images_ISLES2015/training/"
-subj<-c("05","06")
+datadir <- "~/Desktop/images_ISLES2015/training/"
+subj <- c("05","06")
 
 image.file<-vector(length = length(subj), mode = "list")
 mask.file<-vector(length = length(subj), mode = "list")
@@ -114,6 +114,7 @@ preds <- make.pred.img(
   verbose = TRUE
 )
 ortho2(preds[[1]]) #prediction image for the first subject
+ortho2(image.file[[1]][[1]], preds[[1]] > 0.5) #prediction image for the first subject
 ```
 
 That is the end of the pipeline for training a model! Now, if we wanted to use this trained model to predict on a out of sample subject, it's fairly simple. We will use the loadings matrix (load) and model fit (fit1) to predict on a new sample.
@@ -124,15 +125,22 @@ First we need a list of paths to images, a list of paths to brain masks, and a v
 test.subj<-c("08")
 test.image.file<-vector(length = length(test.subj), mode = "list")
 test.mask.file<-vector(length = length(test.subj), mode = "list")
+test.y.file<-vector(length = length(test.subj), mode = "list")
 
 for(i in 1:length(test.subj)){
-  
-  test.image.file[[i]][[1]]<-paste0(dir,"flairTrimmedNormImg_Subject",test.subj[i],".nii.gz") 
-  test.image.file[[i]][[2]]<-paste0(dir,"t1TrimmedNormImg_Subject",test.subj[i],".nii.gz") 
-  test.image.file[[i]][[3]]<-paste0(dir,"t2TrimmedNormImg_Subject",test.subj[i],".nii.gz") 
-  test.image.file[[i]][[4]]<-paste0(dir,"dwiTrimmedNormImg_Subject",test.subj[i],".nii.gz") 
-  test.mask.file[[i]]<-paste0(dir,"brainmask_Subject",test.subj[i],".nii.gz")
-  
+  imgs = file.path(datadir,
+                   paste0(c("flair", "t1", "t2", "dwi"),
+                          "TrimmedNormImg_Subject",
+                          test.subj[i], ".nii.gz"))
+  test.image.file[[i]][[1]] <- imgs[1]
+  test.image.file[[i]][[2]] <- imgs[2]
+  test.image.file[[i]][[3]] <- imgs[3]
+  test.image.file[[i]][[4]] <- imgs[4]
+  test.mask.file[[i]] <- file.path(datadir, 
+                                   paste0("brainmask_Subject", subj[i], ".nii.gz"))
+  test.y.file[[i]] <- file.path(datadir, 
+                           paste0("ymask_Subject", subj[i], ".nii.gz")
+  )
 }
 ```
 
@@ -145,22 +153,42 @@ print(test.subj)
 Now, we will use make.score.img() to make predictors for this new subject, but use the loading that we trained.
 
 ```{r,echo=TRUE,cache=TRUE}
-test.scores<-make.score.img(path.img.list = test.image.file,
-                            path.mask.list = test.mask.file,
-                            loads = load, #training loadings matrix
-                            which.scores = 1:8 #make sure this is the same as what your training set used
+test.scores <-
+  scores <- make.score.img(
+  path.img.list = test.image.file,
+  path.mask.list = test.mask.file,
+  loads = loadings,  #training loadings matrix
+  which.scores = 1:8  #make sure this is the same as what your training set used
 )
 ```
 
 And now make the prediction image and visualize it...
 
 ```{r,echo=TRUE,cache=TRUE}
-test.preds<-make.pred.img(score.img.list = test.scores,
-                          path.mask.list = test.mask.file,
-                          fit=fit1, #training fit
-                          subj.id = test.subj
+test.preds <- preds <- make.pred.img(
+  score.img.list = test.scores,
+  path.mask.list = test.mask.file,
+  fit = fit1, # training fit
+  # subj.id = subj
+  verbose = TRUE
 )
-ortho2(test.preds[[1]])
+mask = readnii(test.mask.file[[1]]) # 230x230x154
+img = readnii(test.image.file[[1]][[1]]) # 230x230x153
+# ortho2(test.preds[[1]]) #prediction image for the first subject
+ortho2(img, test.preds[[1]] > 0.5) #binary prediction
+
+# comparison to ground truth
+y_img = readnii(test.y.file[[1]]) # 230x230x154
+double_ortho(x = y_img, y = test.preds[[1]] > 0.5, 
+             NA.x = TRUE, 
+             NA.y = TRUE, 
+             xyz = xyz(y_img),
+             col = "white",
+             col.y = "white") #binary prediction
+
+# ortho_diff(img, 
+#            pred = test.preds[[1]] > 0.5, 
+#            roi = y_img) 
 ```
 
 I've now taken you through how to use all the features of medals to both train a model and apply that training to a new subject! This results in prediction images. In reality you would want to use the prediction images from the training set to establish a probability threshold for prediction on the testing data. You might also calculate DICE, partial AUC, etc. It's also advisable to train on a data set bigger than two subjects. This whole analysis was run on a Macbook Pro with 8GB of RAM. If you have more RAM you may want to set mpower=4, which will analyze up to the 4th order moment. 

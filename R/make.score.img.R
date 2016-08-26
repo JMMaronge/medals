@@ -5,6 +5,7 @@
 #' @param path.mask.list A list of paths to the brain mask for each subject. This should be in the same order as the sublists for path.img.list
 #' @param loads The loadings matrix to rotate original data by.
 #' @param which.scores A vector of the score images desired for each subject. Ex. 1:8.
+#' @param verbose Print diagnostic Messages
 #' @export
 #' @import fslr
 #' @import ANTsR
@@ -13,21 +14,39 @@
 #' make.score.img()
 
 
-make.score.img<-function(path.img.list,path.mask.list,loads=def.loads,which.scores=1:8){
+make.score.img<-function(path.img.list,
+                         path.mask.list,
+                         loads=def.loads,
+                         which.scores=1:8,
+                         verbose = TRUE){
 
   score.imgs<-vector(mode = "list",length = length(path.img.list))
   for(i in 1:length(path.img.list)){
-    print(paste0("Starting subject ",i))
-    x_i<-get.img.moment.dat(
+    if (verbose) {
+      message(paste0("Starting subject ",i))
+    }
+    x_i <- get.img.moment.dat(
       path.img.list[[i]],
       path.mask.list[[i]],
       mpower = dim(loads)[1]/27/length(path.img.list[[1]]))
-    img.mask <- readnii(path.mask.list[[i]])
-    for(l in which.scores){
-      score <- x_i%*%loads[,l]
-      img<-remake_img(vec = score, img = img.mask, mask = img.mask)
-      img[img.mask==0] = NA
+    mask <- check_nifti(path.mask.list[[i]])
+
+    if (verbose) {
+      message("Rotating Neighborhoods")
+    }
+    x_i <- x_i %*% loads
+    for (l in which.scores) {
+      if (verbose) {
+        message("Making Score Images")
+      }
+      score = x_i[, l]
+      img <- remake_img(vec = score,
+                        img = mask,
+                        mask = mask)
+      rm(list = "score"); gc(); gc();
+      img[ mask == 0 ] = NA
       score.imgs[[i]][[l]] <- img
+      rm(list = "img"); gc(); gc();
     }
   }
   return(score.imgs)
