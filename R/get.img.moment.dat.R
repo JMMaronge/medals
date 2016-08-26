@@ -27,13 +27,14 @@ get.img.moment.dat <- function(imgs.path,
                            mask = mask,
                            radius = rep(1,3),
                            boundary.condition = "mean",
-                           verbose = verbose)$values
+                           verbose = verbose,
+                           get.gradient = FALSE)$values
     )
     for (k in 1:mpower) {
       x_i[, seq(ind + 1, ind + 27)] = vals^k
       ind = ind + 27
     }
-    rm(list = "vals");
+    rm(list = "vals"); gc();
     eval(gc(), parent.frame())
   }
   rm(list = "mask"); gc();

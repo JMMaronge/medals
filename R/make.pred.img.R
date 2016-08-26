@@ -12,8 +12,6 @@
 #' @import extrantsr
 #' @examples
 #' make.pred.img()
-
-
 make.pred.img <- function(score.img.list,
                         path.mask.list,
                         fit = medals::def.fit,
