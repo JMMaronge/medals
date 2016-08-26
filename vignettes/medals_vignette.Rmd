@@ -72,8 +72,8 @@ dim(cp)
 The next function we will use is `pc.var()`. This will gives us information about the variance and cumulative variance explained by each principal component so that we can make a decision on how many PCs to keep for prediction. The arguments this function takes are the population level cross-product matrix and the total number of voxels in the brain mask across all subjects, which is contained within the suff object that we created.
 
 ```{r, echo=TRUE}
-pc.var(cp,suff$total.n)$var[1:10]
-pc.var(cp,suff$total.n)$cum_pct[[2]][1:10]
+pc.var(cp,suff$total.n)$var[1:8]
+pc.var(cp,suff$total.n)$cum_pct[1:8]
 ```
 
 Since the first 8 PCs contain ~85% of the total variance explained in the original data, I'll choose to keep the first 8 PCs as predictors. I'll use the next function, get.loadings() to create the loadings matrix which will be used to rotate the original images into score images. I'll then use the function make.score.img() to create score images for each subject for each principal component. These will be used as predictors in the logistic regression model.

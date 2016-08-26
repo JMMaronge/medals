@@ -22,7 +22,7 @@ make.score.img<-function(path.img.list,path.mask.list,loads=def.loads,which.scor
       path.img.list[[i]],
       path.mask.list[[i]],
       mpower = dim(loads)[1]/27/length(path.img.list[[1]]))
-    img.maskv<- readnii(path.mask.list[[i]])
+    img.mask <- readnii(path.mask.list[[i]])
     for(l in which.scores){
       score <- x_i%*%loads[,l]
       img<-remake_img(vec = score, img = img.mask, mask = img.mask)
