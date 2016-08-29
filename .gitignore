@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+
+vignettes/medals_vignette_cache/*
