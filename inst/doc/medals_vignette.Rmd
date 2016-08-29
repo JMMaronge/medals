@@ -23,6 +23,7 @@ mask.file<-vector(length = length(subj), mode = "list")
 y.file<-vector(length = length(subj), mode = "list")
 
 for(i in 1:length(subj)){
+<<<<<<< HEAD
   imgs = file.path(datadir,
                    paste0(c("flair", "t1", "t2", "dwi"),
                           "TrimmedNormImg_Subject",
@@ -51,6 +52,7 @@ The first thing we need to do is center and scale the columns of the matrix we w
 #### library(devtools) ### for install_github()
 #### install_github("jmmaronge/medals") ### installing medals
 library(medals)
+<<<<<<< HEAD
 suff <- imaging.suff.stat(
   path.img.list = image.file,
   path.mask.list = mask.file,
@@ -74,6 +76,29 @@ The next function we will use is `pc.var()`. This will gives us information abou
 ```{r, echo=TRUE}
 pc.var(cp,suff$total.n)$var[1:8]
 pc.var(cp,suff$total.n)$cum_pct[1:8]
+=======
+suff<-imaging.suff.stat(path.img.list = image.file,
+                        path.mask.list = mask.file,
+                        mpower = 2 #### denotes highest order moment wanted
+    )
+```
+  
+suff\$mean will return the vector of column means, suff\$sd will return a vector of column standard deviations, suff\$n will return a vector of the number of voxels in the brain mask for each subject, and suff\$cp.mats will return a list of the subject-specific cross-product matrices. These will be used in the next function, imaging.cp.mat(). This function we create the population level cross-product matrix we want to decompose. This matrix is based off of the center and scaled $X$ matrix.
+
+```{r,echo=TRUE,cache=TRUE}
+cp<-imaging.cp.mat(mean.vec = suff$mean,
+                   sd.vec = suff$sd,
+                   n.vec = suff$n,
+                   cp.list = suff$cp.mats
+  )
+dim(cp)
+```
+
+The next function we will use is pc.var(). This will gives us information about the variance and cumulative variance explained by each principal component so that we can make a decision on how many PCs to keep for prediction. The arguments this function takes are the population level cross-product matrix and the total number of voxels in the brain mask across all subjects, which is contained within the suff object that we created.
+
+```{r, echo=TRUE}
+pc.var(cp,suff$total.n)[[1]][1:10]
+pc.var(cp,suff$total.n)[[2]][1:10]
 ```
 
 Since the first 8 PCs contain ~85% of the total variance explained in the original data, I'll choose to keep the first 8 PCs as predictors. I'll use the next function, get.loadings() to create the loadings matrix which will be used to rotate the original images into score images. I'll then use the function make.score.img() to create score images for each subject for each principal component. These will be used as predictors in the logistic regression model.
@@ -153,6 +178,7 @@ print(test.subj)
 Now, we will use make.score.img() to make predictors for this new subject, but use the loading that we trained.
 
 ```{r,echo=TRUE,cache=TRUE}
+<<<<<<< HEAD
 test.scores <-
   scores <- make.score.img(
   path.img.list = test.image.file,

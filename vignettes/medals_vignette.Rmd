@@ -137,9 +137,15 @@ for(i in 1:length(test.subj)){
   test.image.file[[i]][[3]] <- imgs[3]
   test.image.file[[i]][[4]] <- imgs[4]
   test.mask.file[[i]] <- file.path(datadir, 
+<<<<<<< HEAD
                                    paste0("brainmask_Subject", test.subj[i], ".nii.gz"))
   test.y.file[[i]] <- file.path(datadir, 
                            paste0("ymask_Subject", test.subj[i], ".nii.gz")
+=======
+                                   paste0("brainmask_Subject", subj[i], ".nii.gz"))
+  test.y.file[[i]] <- file.path(datadir, 
+                           paste0("ymask_Subject", subj[i], ".nii.gz")
+>>>>>>> 4fd73187526ffe94e314994efb40be1cf3f6f659
   )
 }
 ```
@@ -172,13 +178,22 @@ test.preds <- preds <- make.pred.img(
   # subj.id = subj
   verbose = TRUE
 )
+<<<<<<< HEAD
 mask = readnii(test.mask.file[[1]])
 img = readnii(test.image.file[[1]][[1]]) 
+=======
+mask = readnii(test.mask.file[[1]]) # 230x230x154
+img = readnii(test.image.file[[1]][[1]]) # 230x230x153
+>>>>>>> 4fd73187526ffe94e314994efb40be1cf3f6f659
 # ortho2(test.preds[[1]]) #prediction image for the first subject
 ortho2(img, test.preds[[1]] > 0.5) #binary prediction
 
 # comparison to ground truth
+<<<<<<< HEAD
 y_img = readnii(test.y.file[[1]]) 
+=======
+y_img = readnii(test.y.file[[1]]) # 230x230x154
+>>>>>>> 4fd73187526ffe94e314994efb40be1cf3f6f659
 double_ortho(x = y_img, y = test.preds[[1]] > 0.5, 
              NA.x = TRUE, 
              NA.y = TRUE, 
@@ -186,9 +201,15 @@ double_ortho(x = y_img, y = test.preds[[1]] > 0.5,
              col = "white",
              col.y = "white") #binary prediction
 
+<<<<<<< HEAD
 ortho_diff(img, 
            pred = test.preds[[1]] > 0.5, 
           roi = y_img) 
+=======
+# ortho_diff(img, 
+#            pred = test.preds[[1]] > 0.5, 
+#            roi = y_img) 
+>>>>>>> 4fd73187526ffe94e314994efb40be1cf3f6f659
 ```
 
 I've now taken you through how to use all the features of medals to both train a model and apply that training to a new subject! This results in prediction images. In reality you would want to use the prediction images from the training set to establish a probability threshold for prediction on the testing data. You might also calculate DICE, partial AUC, etc. It's also advisable to train on a data set bigger than two subjects. This whole analysis was run on a Macbook Pro with 8GB of RAM. If you have more RAM you may want to set mpower=4, which will analyze up to the 4th order moment. 
