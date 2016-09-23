@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 
 Streaming_PCA_image_functions.R
+^\.travis\.yml$
