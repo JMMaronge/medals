@@ -4,7 +4,7 @@
 \alias{get.model.fit}
 \title{A function to fit a logistic regression model for MEDALS}
 \usage{
-get.model.fit(score.img.list, path.mask.list, path.y.list, subj.id)
+get.model.fit(score.img.list, path.mask.list, path.y.list, verbose = TRUE)
 }
 \arguments{
 \item{score.img.list}{A list of sublists, where each sublist is a list of images created from the PC scores. This can be the output of make.score.img().This has to contain at least one sublist}
@@ -13,13 +13,10 @@ get.model.fit(score.img.list, path.mask.list, path.y.list, subj.id)
 
 \item{path.y.list}{A list of paths to the lesion mask for each subject. This should be in the same order as the sublists for score.img.list}
 
-\item{subj.id}{A vector of subject identifiers.}
+\item{verbose}{Print diagnostic messages}
 }
 \description{
 This function allows you to get a model fit using the PC scores for MEDALS
-}
-\examples{
-get.model.fit()
 }
 \keyword{MEDALS,}
 \keyword{fitting}

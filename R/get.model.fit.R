@@ -7,12 +7,9 @@
 #' @param verbose Print diagnostic messages
 #' @keywords MEDALS, model fitting
 #' @export
-#' @import fslr
-#' @import ANTsR
-#' @import extrantsr
-#' @import dplyr
-#' @examples
-#' get.model.fit()
+#' @importFrom neurobase check_nifti
+#' @importFrom dplyr bind_rows
+#' @importFrom stats glm
 get.model.fit <- function(score.img.list, path.mask.list, path.y.list,
                           # subj.id = NULL,
                           verbose = TRUE){

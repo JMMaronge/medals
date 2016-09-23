@@ -7,13 +7,9 @@
 #' @param verbose print diagnostic messages
 #' @keywords MEDALS, Sufficiency, Segmentation
 #' @export
-#' @import fslr
-#' @import ANTsR
-#' @import extrantsr
-#' @examples
-#' get.img.moment.dat()
-
-get.img.moment.dat <- function(imgs.path,
+#' @importFrom extrantsr check_ants neighborhood
+#'
+ get.img.moment.dat <- function(imgs.path,
                                mask.path,
                                mpower = 4,
                                verbose = TRUE){

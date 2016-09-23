@@ -7,9 +7,6 @@
 #' @export
 #' @return List of 2 elements: \code{var}: variance of each
 #' component, \code{cum_pct}: cumulative percent variance explained
-#' @examples
-#' pc.var()
-
 pc.var <- function(mat,n){
   var.pc <- svd(mat)$d / (n - 1)
   cumvar <- cumsum(var.pc)/sum(var.pc)

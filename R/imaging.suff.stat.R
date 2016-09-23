@@ -7,12 +7,6 @@
 #' @param verbose print diagnostic messages
 #' @keywords MEDALS, Sufficiency, Segmentation
 #' @export
-#' @import fslr
-#' @import ANTsR
-#' @import extrantsr
-#' @examples
-#' imaging.suff.stat()
-
 imaging.suff.stat <- function(path.img.list,
                               path.mask.list,
                               mpower=4,

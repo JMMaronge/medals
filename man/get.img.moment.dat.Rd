@@ -18,9 +18,6 @@ get.img.moment.dat(imgs.path, mask.path, mpower = 4, verbose = TRUE)
 \description{
 This function allows you to calculate the matrix of neighborhood moments for MEDALS.
 }
-\examples{
-get.img.moment.dat()
-}
 \keyword{MEDALS,}
 \keyword{Segmentation}
 \keyword{Sufficiency,}

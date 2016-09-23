@@ -18,9 +18,6 @@ imaging.suff.stat(path.img.list, path.mask.list, mpower = 4, verbose = TRUE)
 \description{
 This function allows you to calculate the sufficient statistics to center and scale each column in the huge matrix X for MEDALS. This should be the first step of the MEDALS pipeline
 }
-\examples{
-imaging.suff.stat()
-}
 \keyword{MEDALS,}
 \keyword{Segmentation}
 \keyword{Sufficiency,}

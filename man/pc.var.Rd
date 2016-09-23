@@ -11,11 +11,12 @@ pc.var(mat, n)
 
 \item{n}{The number of observations in the original matrix. This can be the output for imaging.suff.stat}
 }
+\value{
+List of 2 elements: \code{var}: variance of each
+component, \code{cum_pct}: cumulative percent variance explained
+}
 \description{
 This function returns the variance explained by each PC and the cumulative variance explained in the medals package, this should be used with the output of imaging.cp
-}
-\examples{
-pc.var()
 }
 \keyword{MEDALS,}
 \keyword{variance}

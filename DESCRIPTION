@@ -1,7 +1,7 @@
 Package: medals
 Title: Performs Memory Efficient Decomposition for Analysis of Local
     neighborhood moments for Segmentation
-Version: 0.1.2.0
+Version: 0.2.0
 Authors@R: c(person("Jacob", "Maronge", email = "jmmaronge@gmail.com", role = c("aut", "cre")),
   person("John", "Muschelli", role = "ctb"))
 Description: medals() performs a method which can be used for segmentation by
@@ -10,8 +10,8 @@ Description: medals() performs a method which can be used for segmentation by
     time.
 Depends:
     R (>= 3.3.0)
-Import:
-    fslr,
+Imports:
+    neurobase,
     ANTsR,
     extrantsr,
     dplyr

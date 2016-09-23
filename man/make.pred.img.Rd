@@ -4,7 +4,8 @@
 \alias{make.pred.img}
 \title{A function to make prediction images for MEDALS}
 \usage{
-make.pred.img(score.img.list, path.mask.list, fit = def.fit, subj.id)
+make.pred.img(score.img.list, path.mask.list, fit = medals::def.fit,
+  verbose = TRUE)
 }
 \arguments{
 \item{score.img.list}{A list of sublists, where each sublist is a list of images created from the PC scores. This can be the output of make.score.img().This has to contain at least one sublist}
@@ -13,13 +14,10 @@ make.pred.img(score.img.list, path.mask.list, fit = def.fit, subj.id)
 
 \item{fit}{A model fit object, either use the default or use the output from get.model.fit().}
 
-\item{subj.id}{A vector of subject identifiers.}
+\item{verbose}{Print diagnostic messages}
 }
 \description{
 This function allows you to create prediction images from the MEDALS pipeline. This should be the last step
-}
-\examples{
-make.pred.img()
 }
 \keyword{MEDALS,}
 \keyword{Prediction}

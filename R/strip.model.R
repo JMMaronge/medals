@@ -4,10 +4,6 @@
 #' @param model A fit object to be stripped
 #' @keywords fit
 #' @export
-#' @examples
-#' strip.model()
-
-
 strip.model = function(model){
   model$y = c()
   model$model = c()
