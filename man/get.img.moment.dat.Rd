@@ -9,11 +9,11 @@ get.img.moment.dat(imgs.path, mask.path, mpower = 4, verbose = TRUE)
 \arguments{
 \item{imgs.path}{A list of paths to images for one subject.}
 
+\item{mask.path}{A path to the braiin mask for each subject.}
+
 \item{mpower}{A scalar specifying the highest moment wanted for the MEDALS analysis.}
 
 \item{verbose}{print diagnostic messages}
-
-\item{path.mask.list}{A path to the braiin mask for each subject.}
 }
 \description{
 This function allows you to calculate the matrix of neighborhood moments for MEDALS.

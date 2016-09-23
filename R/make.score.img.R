@@ -10,7 +10,7 @@
 #' @importFrom neurobase check_nifti remake_img
 make.score.img<-function(path.img.list,
                          path.mask.list,
-                         loads=def.loads,
+                         loads= medals::def.loads,
                          which.scores=1:8,
                          verbose = TRUE){
 

@@ -2,7 +2,7 @@
 #'
 #' This function allows you to calculate the matrix of neighborhood moments for MEDALS.
 #' @param imgs.path A list of paths to images for one subject.
-#' @param path.mask.list A path to the braiin mask for each subject.
+#' @param mask.path A path to the braiin mask for each subject.
 #' @param mpower A scalar specifying the highest moment wanted for the MEDALS analysis.
 #' @param verbose print diagnostic messages
 #' @keywords MEDALS, Sufficiency, Segmentation

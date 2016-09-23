@@ -4,7 +4,7 @@
 \alias{make.score.img}
 \title{A function to create score images for each subject for MEDALS.}
 \usage{
-make.score.img(path.img.list, path.mask.list, loads = def.loads,
+make.score.img(path.img.list, path.mask.list, loads = medals::def.loads,
   which.scores = 1:8, verbose = TRUE)
 }
 \arguments{

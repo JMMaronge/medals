@@ -21,3 +21,5 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1.9000
+Remotes: muschellij2/neurobase, muschellij2/extrantsr, stnava/ANTsR
+
