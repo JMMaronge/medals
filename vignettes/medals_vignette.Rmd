@@ -1,0 +1,200 @@
+---
+title: "medals Vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{medals Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+Hi everyone! The purpose of this vignette is to give an easy to understand tutorial on how to use my new package, medals! As you may know, my package is available [here](https://github.com/JMMaronge/medals). medals is a R package to implement a new method I've been working on for lesion segmentation, which I'm calling MEDALS: Memory Efficient Decomposition for Analysis of Local neighborhood moments for Segmentation.  
+
+For this vignette, we will use the medals package to train on two subjects with multimodal MRI (T1w, T2w, FLAIR, DWI).  Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then every image is normalized using a trimmed normalization. We will analyze up to the 2nd order moment image. Then we will test the fitting on a separate subject.
+
+Before doing anything, we need to get our data in a particular form. We need a list of paths to MRI images, a list of paths to brain masks, and a list of paths to manual segmentations.  Below I show the structure of these lists. Images are denoted by image.file, brain masks by mask.file and manual segmentations by y.file. Notice that image.file is a list of sublists, each sublist is a list of imaging sequences for a particular subject. The orders of image.file, mask.file, and y.file should all match. We also need a vector of subject IDs.  The data I'm using id from the 2015 ISLES challenge, which is [here](http://www.isles-challenge.org/ISLES2015/).
+
+```{r, echo=TRUE}
+library(medals)
+datadir <- "~/Desktop/images_ISLES2015/training/"
+subj <- c("05","06")
+
+image.file<-vector(length = length(subj), mode = "list")
+mask.file<-vector(length = length(subj), mode = "list")
+y.file<-vector(length = length(subj), mode = "list")
+
+for(i in 1:length(subj)){
+  imgs = file.path(datadir,
+                   paste0(c("flair", "t1", "t2", "dwi"),
+                          "TrimmedNormImg_Subject",
+                          subj[i], ".nii.gz"))
+  image.file[[i]][[1]] <- imgs[1]
+  image.file[[i]][[2]] <- imgs[2]
+  image.file[[i]][[3]] <- imgs[3]
+  image.file[[i]][[4]] <- imgs[4]
+  mask.file[[i]] <- file.path(datadir, paste0("brainmask_Subject", subj[i], ".nii.gz"))
+  y.file[[i]] <- file.path(datadir, 
+                           paste0("ymask_Subject", subj[i], ".nii.gz")
+  )
+}
+```
+
+```{r,echo=TRUE}
+print(image.file)
+print(mask.file)
+print(y.file)
+print(subj)
+```
+
+The first thing we need to do is center and scale the columns of the matrix we want to perform PCA on. To do this, we will get the column mean and standard deviation for each column. This is done by using imaging.suff.stat(), as shown below
+
+```{r,echo=TRUE,cache=TRUE}
+#### library(devtools) ### for install_github()
+#### install_github("jmmaronge/medals") ### installing medals
+library(medals)
+suff <- imaging.suff.stat(
+  path.img.list = image.file,
+  path.mask.list = mask.file,
+  mpower = 2 #### denotes highest order moment wanted
+)
+```
+
+suff\$mean will return the vector of column means, suff\$sd will return a vector of column standard deviations, suff\$n will return a vector of the number of voxels in the brain mask for each subject, and suff\$cp.mats will return a list of the subject-specific cross-product matrices. These will be used in the next function, imaging.cp.mat(). This function we create the population level cross-product matrix we want to decompose. This matrix is based off of the center and scaled $X$ matrix.
+
+```{r,echo=TRUE,cache=TRUE}
+cp <- imaging.cp.mat(mean.vec = suff$mean,
+                     sd.vec = suff$sd,
+                     n.vec = suff$n,
+                     cp.list = suff$cp.mats
+)
+dim(cp)
+```
+
+The next function we will use is `pc.var()`. This will gives us information about the variance and cumulative variance explained by each principal component so that we can make a decision on how many PCs to keep for prediction. The arguments this function takes are the population level cross-product matrix and the total number of voxels in the brain mask across all subjects, which is contained within the suff object that we created.
+
+```{r, echo=TRUE}
+pc.var(cp,suff$total.n)$var[1:8]
+pc.var(cp,suff$total.n)$cum_pct[1:8]
+```
+
+Since the first 8 PCs contain ~85% of the total variance explained in the original data, I'll choose to keep the first 8 PCs as predictors. I'll use the next function, get.loadings() to create the loadings matrix which will be used to rotate the original images into score images. I'll then use the function make.score.img() to create score images for each subject for each principal component. These will be used as predictors in the logistic regression model.
+
+```{r,echo=TRUE,cache=TRUE}
+loadings <- get.loadings(cp)
+scores <- make.score.img(
+  path.img.list = image.file,
+  path.mask.list = mask.file,
+  loads = loadings,
+  which.scores = 1:8
+)
+```
+
+We can visualize the score images thanks to John Muschelli's ortho2() function in his fslr package.
+
+```{r,echo=TRUE}
+#install.packages("fslr")
+library(neurobase)
+ortho2(scores[[1]][[2]]) # gives you the score image of the 1st subject, 2nd PC
+```
+
+Now, we need to get the model fit for the regression, this fit is then used to create the list of prediction images for each subject. Then I used ortho2() to visualize the prediction image for the first subject.
+
+```{r,echo=TRUE,cache=TRUE}
+fit1 <- get.model.fit(
+  score.img.list = scores,
+  path.mask.list = mask.file,
+  path.y.list = y.file,
+  # subj.id = subj,
+  verbose = TRUE
+)
+preds <- make.pred.img(
+  score.img.list = scores,
+  path.mask.list = mask.file,
+  fit = fit1,
+  # subj.id = subj
+  verbose = TRUE
+)
+ortho2(preds[[1]]) #prediction image for the first subject
+ortho2(image.file[[1]][[1]], preds[[1]] > 0.5) #prediction image for the first subject
+```
+
+That is the end of the pipeline for training a model! Now, if we wanted to use this trained model to predict on a out of sample subject, it's fairly simple. We will use the loadings matrix (load) and model fit (fit1) to predict on a new sample.
+
+First we need a list of paths to images, a list of paths to brain masks, and a vector of subject IDs for this new subject (or subjects). It should be arranged like so.
+
+```{r,echo=TRUE}
+test.subj<-c("08")
+test.image.file<-vector(length = length(test.subj), mode = "list")
+test.mask.file<-vector(length = length(test.subj), mode = "list")
+test.y.file<-vector(length = length(test.subj), mode = "list")
+
+for(i in 1:length(test.subj)){
+  imgs = file.path(datadir,
+                   paste0(c("flair", "t1", "t2", "dwi"),
+                          "TrimmedNormImg_Subject",
+                          test.subj[i], ".nii.gz"))
+  test.image.file[[i]][[1]] <- imgs[1]
+  test.image.file[[i]][[2]] <- imgs[2]
+  test.image.file[[i]][[3]] <- imgs[3]
+  test.image.file[[i]][[4]] <- imgs[4]
+  test.mask.file[[i]] <- file.path(datadir, 
+                                   paste0("brainmask_Subject", test.subj[i], ".nii.gz"))
+  test.y.file[[i]] <- file.path(datadir, 
+                           paste0("ymask_Subject", test.subj[i], ".nii.gz")
+  )
+}
+```
+
+```{r,echo=TRUE}
+print(test.image.file)
+print(test.mask.file)
+print(test.subj)
+```
+
+Now, we will use make.score.img() to make predictors for this new subject, but use the loading that we trained.
+
+```{r,echo=TRUE,cache=TRUE}
+test.scores <-
+  scores <- make.score.img(
+  path.img.list = test.image.file,
+  path.mask.list = test.mask.file,
+  loads = loadings,  #training loadings matrix
+  which.scores = 1:8  #make sure this is the same as what your training set used
+)
+```
+
+And now make the prediction image and visualize it...
+
+```{r,echo=TRUE,cache=TRUE}
+test.preds <- preds <- make.pred.img(
+  score.img.list = test.scores,
+  path.mask.list = test.mask.file,
+  fit = fit1, # training fit
+  # subj.id = subj
+  verbose = TRUE
+)
+mask = readnii(test.mask.file[[1]]) # 230x230x154
+img = readnii(test.image.file[[1]][[1]]) # 230x230x153
+# ortho2(test.preds[[1]]) #prediction image for the first subject
+ortho2(img, test.preds[[1]] > 0.5) #binary prediction
+
+# comparison to ground truth
+y_img = readnii(test.y.file[[1]]) # 230x230x154
+double_ortho(x = y_img, y = test.preds[[1]] > 0.5, 
+             NA.x = TRUE, 
+             NA.y = TRUE, 
+             xyz = xyz(y_img),
+             col = "white",
+             col.y = "white") #binary prediction
+
+ortho_diff(img, 
+           pred = test.preds[[1]] > 0.5, 
+          roi = y_img) 
+```
+
+I've now taken you through how to use all the features of medals to both train a model and apply that training to a new subject! This results in prediction images. In reality you would want to use the prediction images from the training set to establish a probability threshold for prediction on the testing data. You might also calculate DICE, partial AUC, etc. It's also advisable to train on a data set bigger than two subjects. This whole analysis was run on a Macbook Pro with 8GB of RAM. If you have more RAM you may want to set mpower=4, which will analyze up to the 4th order moment. 
+
+
+
+
+
+
