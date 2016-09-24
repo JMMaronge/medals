@@ -12,8 +12,5 @@ strip.model(model)
 \description{
 This function was taken from muschellij2/ms_seg, it strips fit objects from R of all but coefficient estimates
 }
-\examples{
-strip.model()
-}
 \keyword{fit}
 

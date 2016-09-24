@@ -7,11 +7,7 @@
 #' @param verbose Print diagnostic messages
 #' @keywords MEDALS, Prediction
 #' @export
-#' @import fslr
-#' @import ANTsR
-#' @import extrantsr
-#' @examples
-#' make.pred.img()
+#' @importFrom stats predict
 make.pred.img <- function(score.img.list,
                         path.mask.list,
                         fit = medals::def.fit,

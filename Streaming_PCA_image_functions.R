@@ -1,4 +1,4 @@
-.  ####Function to do streaming PCA on Images
+####Function to do streaming PCA on Images
 
 
 #dir <- "~/PCA_local/images_ISLES2015/"
@@ -113,15 +113,15 @@ make.score.img<-function(path.img.list,path.mask.list,cov.mat,which.scores){
     }
   }
   return(score.imgs)
-  
-}  
-  
-  
-get.var.cot  
-  
-  
-  
-  
+
+}
+
+
+get.var.cot
+
+
+
+
 
 
 #testing

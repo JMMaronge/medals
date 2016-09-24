@@ -7,16 +7,10 @@
 #' @param which.scores A vector of the score images desired for each subject. Ex. 1:8.
 #' @param verbose Print diagnostic Messages
 #' @export
-#' @import fslr
-#' @import ANTsR
-#' @import extrantsr
-#' @examples
-#' make.score.img()
-
-
+#' @importFrom neurobase check_nifti remake_img
 make.score.img<-function(path.img.list,
                          path.mask.list,
-                         loads=def.loads,
+                         loads= medals::def.loads,
                          which.scores=1:8,
                          verbose = TRUE){
 

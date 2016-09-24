@@ -11,7 +11,7 @@ Hi everyone! The purpose of this vignette is to give an easy to understand tutor
 
 For this vignette, we will use the medals package to train on two subjects with multimodal MRI (T1w, T2w, FLAIR, DWI).  Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then every image is normalized using a trimmed normalization. We will analyze up to the 2nd order moment image. Then we will test the fitting on a separate subject.
 
-Before doing anything, we need to get our data in a particular form. We need a list of paths to MRI images, a list of paths to brain masks, and a list of paths to manual segmentations.  Below I show the structure of these lists. Images are denoted by image.file, brain masks by mask.file and manual segmentations by y.file. Notice that image.file is a list of sublists, each sublist is a list of imaging sequences for a particular subject. The orders of image.file, mask.file, and y.file should all match. We also need a vector of subject IDs.  The data I'm using is from the 2015 ISLES challenge, which is [here](http://www.isles-challenge.org/ISLES2015/).
+Before doing anything, we need to get our data in a particular form. We need a list of paths to MRI images, a list of paths to brain masks, and a list of paths to manual segmentations.  Below I show the structure of these lists. Images are denoted by image.file, brain masks by mask.file and manual segmentations by y.file. Notice that image.file is a list of sublists, each sublist is a list of imaging sequences for a particular subject. The orders of image.file, mask.file, and y.file should all match. We also need a vector of subject IDs.  The data I'm using id from the 2015 ISLES challenge, which is [here](http://www.isles-challenge.org/ISLES2015/).
 
 ```{r, echo=TRUE}
 library(medals)
@@ -92,7 +92,7 @@ We can visualize the score images thanks to John Muschelli's ortho2() function i
 
 ```{r,echo=TRUE}
 #install.packages("fslr")
-library(fslr)
+library(neurobase)
 ortho2(scores[[1]][[2]]) # gives you the score image of the 1st subject, 2nd PC
 ```
 
@@ -172,13 +172,13 @@ test.preds <- preds <- make.pred.img(
   # subj.id = subj
   verbose = TRUE
 )
-mask = readnii(test.mask.file[[1]])
-img = readnii(test.image.file[[1]][[1]]) 
+mask = readnii(test.mask.file[[1]]) # 230x230x154
+img = readnii(test.image.file[[1]][[1]]) # 230x230x153
 # ortho2(test.preds[[1]]) #prediction image for the first subject
 ortho2(img, test.preds[[1]] > 0.5) #binary prediction
 
 # comparison to ground truth
-y_img = readnii(test.y.file[[1]]) 
+y_img = readnii(test.y.file[[1]]) # 230x230x154
 double_ortho(x = y_img, y = test.preds[[1]] > 0.5, 
              NA.x = TRUE, 
              NA.y = TRUE, 

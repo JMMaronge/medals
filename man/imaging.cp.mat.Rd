@@ -18,9 +18,6 @@ imaging.cp.mat(mean.vec, sd.vec, n.vec, cp.list)
 \description{
 This function allows you to create the cross-product matrix ($X^TX$) for MEDALS. This is the matrix the PCA will be performed on. This is the 2nd step in the MEDALS pipeline.
 }
-\examples{
-imaging.cp()
-}
 \keyword{MEDALS,}
 \keyword{PCA,}
 \keyword{Segmentation}

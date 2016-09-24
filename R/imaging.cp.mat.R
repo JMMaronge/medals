@@ -7,16 +7,10 @@
 #' @param cp.list A list of subject-specific cross-product matrices
 #' @keywords MEDALS, PCA, Segmentation
 #' @export
-#' @import fslr
-#' @import ANTsR
-#' @import extrantsr
-#' @examples
-#' imaging.cp()
-
 imaging.cp.mat<-function(mean.vec,sd.vec,n.vec,cp.list){
   M = outer(mean.vec,mean.vec)
   S = outer(sd.vec,sd.vec)
-  
+
   c_i= vector(mode = "list",length=length(cp.list))
   for(i in 1:length(cp.list)){
     c_i[[i]] <- (cp.list[[i]]-n.vec[i]*M)/S
