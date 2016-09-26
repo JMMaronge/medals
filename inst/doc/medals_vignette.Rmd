@@ -92,7 +92,7 @@ We can visualize the score images thanks to John Muschelli's ortho2() function i
 
 ```{r,echo=TRUE}
 #install.packages("fslr")
-library(fslr)
+library(neurobase)
 ortho2(scores[[1]][[2]]) # gives you the score image of the 1st subject, 2nd PC
 ```
 
@@ -172,13 +172,13 @@ test.preds <- preds <- make.pred.img(
   # subj.id = subj
   verbose = TRUE
 )
-mask = readnii(test.mask.file[[1]])
-img = readnii(test.image.file[[1]][[1]]) 
+mask = readnii(test.mask.file[[1]]) # 230x230x154
+img = readnii(test.image.file[[1]][[1]]) # 230x230x153
 # ortho2(test.preds[[1]]) #prediction image for the first subject
 ortho2(img, test.preds[[1]] > 0.5) #binary prediction
 
 # comparison to ground truth
-y_img = readnii(test.y.file[[1]]) 
+y_img = readnii(test.y.file[[1]]) # 230x230x154
 double_ortho(x = y_img, y = test.preds[[1]] > 0.5, 
              NA.x = TRUE, 
              NA.y = TRUE, 
