@@ -15,6 +15,6 @@ imaging.cp.mat<-function(mean.vec,sd.vec,n.vec,cp.list){
   for(i in 1:length(cp.list)){
     c_i[[i]] <- (cp.list[[i]]-n.vec[i]*M)/S
   }
-  cp<-do.call("+",c_i)
+  cp<-Reduce("+",c_i)
   return(cp)
   }
