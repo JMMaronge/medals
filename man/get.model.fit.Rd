@@ -21,4 +21,3 @@ This function allows you to get a model fit using the PC scores for MEDALS
 \keyword{MEDALS,}
 \keyword{fitting}
 \keyword{model}
-

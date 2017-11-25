@@ -21,4 +21,3 @@ This function allows you to calculate the matrix of neighborhood moments for MED
 \keyword{MEDALS,}
 \keyword{Segmentation}
 \keyword{Sufficiency,}
-

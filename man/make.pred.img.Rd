@@ -21,4 +21,3 @@ This function allows you to create prediction images from the MEDALS pipeline. T
 }
 \keyword{MEDALS,}
 \keyword{Prediction}
-

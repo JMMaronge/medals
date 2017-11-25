@@ -21,4 +21,3 @@ This function allows you to create the cross-product matrix ($X^TX$) for MEDALS.
 \keyword{MEDALS,}
 \keyword{PCA,}
 \keyword{Segmentation}
-

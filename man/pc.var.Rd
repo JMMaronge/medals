@@ -20,4 +20,3 @@ This function returns the variance explained by each PC and the cumulative varia
 }
 \keyword{MEDALS,}
 \keyword{variance}
-

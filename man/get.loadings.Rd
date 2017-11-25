@@ -12,4 +12,3 @@ get.loadings(cov.mat)
 \description{
 This function allows you to create loadings matrix for PC scores in the MEDALS pipeline. T
 }
-

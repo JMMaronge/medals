@@ -21,4 +21,3 @@ make.score.img(path.img.list, path.mask.list, loads = medals::def.loads,
 \description{
 This function allows you to create the score images for each PC in the MEDALS pipeline. These will be used as predictors in a model to predict lesion areas. This should be the 3rd step in the MEDALS pipeline.
 }
-
