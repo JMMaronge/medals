@@ -40,7 +40,7 @@ moment.cor.mat<- function(path.img.list,
     gc() # R handles RAM funny, good to gc() after deleting
     }
   
-  pop.sd <- sqrt((SOS.vec-(mean.vec*n.k/n.k)^2*n.k)/(n.k-1)) # population standard deviation
+  pop.sd <- sqrt((SOS.vec-mean.vec^2*n.k)/(n.k-1)) # population standard deviation
   c.mat<-(cp.mat-n.k*outer(mean.vec,mean.vec))/(outer(pop.sd,pop.sd)) # total center and scaled cross product matrix
   out<-list()
   out$c.mat<-c.mat #output center and scaled cross-product matrix
