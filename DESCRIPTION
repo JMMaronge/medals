@@ -6,7 +6,7 @@ Authors@R: c(person("Jacob", "Maronge", email = "jmmaronge@gmail.com", role = c(
   person("John", "Muschelli", role = "ctb"))
 Description: medals() performs a method which can be used for segmentation by
     implementing a decomposition of the local neighborhood moments. It is memory
-    efficient in the sinse that only one image is read into memory at any given
+    efficient in the sense that only one image is read into memory at any given
     time.
 Depends:
     R (>= 3.3.0)

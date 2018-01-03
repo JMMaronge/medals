@@ -3,8 +3,6 @@
 export(get.img.moment.dat)
 export(get.loadings)
 export(get.model.fit)
-export(imaging.cp.mat)
-export(imaging.suff.stat)
 export(make.pred.img)
 export(make.score.img)
 export(moment.cor.mat)
