@@ -9,7 +9,7 @@
 #' component, \code{cum_pct}: cumulative percent variance explained
 pc.var <- function(mat,n){
   var.pc <- svd(mat)$d / (n - 1)
-  cumvar <- cumsum(var.pc)/sum(var.pc)
-  out <- list(var = var.pc, cum_pct = cumvar)
+  cumlvar <- cumsum(var.pc)/sum(var.pc)
+  out <- list(var = var.pc, cuml_pct = cumlvar)
   return(out)
 }
