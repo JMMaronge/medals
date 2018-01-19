@@ -1,6 +1,6 @@
 ## ---- echo=TRUE----------------------------------------------------------
 library(medals)
-datadir <- "~/Desktop/images_ISLES2015/training/"
+datadir <- "~/Desktop/ISLES_2015/all_testing"
 subj <- c("05","06")
 
 image.file<-vector(length = length(subj), mode = "list")
@@ -28,13 +28,16 @@ print(mask.file)
 print(y.file)
 print(subj)
 
-## ---- echo=TRUE----------------------------------------------------------
-pc.var(cp,suff$total.n)$var[1:8]
-pc.var(cp,suff$total.n)$cum_pct[1:8]
-
-## ----echo=TRUE-----------------------------------------------------------
+## ------------------------------------------------------------------------
 #install.packages("fslr")
 library(neurobase)
+ortho2(readnii(image.file[[1]][[1]]))
+
+## ---- echo=TRUE----------------------------------------------------------
+pc.var(mat=cp$c.mat,n=cp$n)$var[1:8]
+pc.var(mat=cp$c.mat,n=cp$n)$cuml_pct[1:8]
+
+## ----echo=TRUE-----------------------------------------------------------
 ortho2(scores[[1]][[2]]) # gives you the score image of the 1st subject, 2nd PC
 
 ## ----echo=TRUE-----------------------------------------------------------
