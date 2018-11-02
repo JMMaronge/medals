@@ -4,7 +4,8 @@
 \alias{moment.cor.mat}
 \title{A function to calculate sufficient statistics and out cross-product matrix efficiently for medals}
 \usage{
-moment.cor.mat(path.img.list, path.mask.list, mpower = 4, verbose = TRUE)
+moment.cor.mat(path.img.list, path.mask.list, mpower = 4,
+  verbose = TRUE)
 }
 \arguments{
 \item{path.img.list}{A list of sublists, where each sublist is a list of paths to the files for each imaging modality (ex. T1w, T2w, DWI, etc.) for a particular subject. This has to contain at least one sublist}

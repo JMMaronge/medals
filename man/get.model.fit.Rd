@@ -4,7 +4,8 @@
 \alias{get.model.fit}
 \title{A function to fit a logistic regression model for MEDALS}
 \usage{
-get.model.fit(score.img.list, path.mask.list, path.y.list, verbose = TRUE)
+get.model.fit(score.img.list, path.mask.list, path.y.list,
+  verbose = TRUE)
 }
 \arguments{
 \item{score.img.list}{A list of sublists, where each sublist is a list of images created from the PC scores. This can be the output of make.score.img().This has to contain at least one sublist}
