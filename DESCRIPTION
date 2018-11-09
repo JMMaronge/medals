@@ -9,7 +9,7 @@ Description: medals() performs a method which can be used for segmentation by
     efficient in the sense that only one image is read into memory at any given
     time.
 Depends:
-    R (>= 3.3.0)
+    R
 Imports:
     neurobase,
     ANTsR,
