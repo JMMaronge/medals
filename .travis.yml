@@ -34,7 +34,8 @@ before_install:
   - cmake --version
   - export ants_user=ANTsX
   - install_missing_remote_deps_all stnava/ITKR
-  - install_missing_remote_deps_all ${ants_user}/ANTsRCore ${ants_user}/ANTsR
+  - install_missing_remote_deps_all ${ants_user}/ANTsRCore 
+  - install_missing_remote_deps_all ${ants_user}/ANTsR
   - echo "Done Installing Missing Deps"
   - gh_binary_install stnava/ITKR
   - gh_binary_install ${ants_user}/ANTsRCore
