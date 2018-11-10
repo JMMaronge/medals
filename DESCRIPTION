@@ -14,11 +14,12 @@ Imports:
     neurobase,
     ANTsR,
     extrantsr,
-    dplyr
+    dplyr,
+    ANTsRCore
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0.9000
-Remotes: muschellij2/neurobase, muschellij2/extrantsr, stnava/ANTsR
+Remotes: muschellij2/neurobase, muschellij2/extrantsr, ANTsX/ANTsR, ANTsX/ANTsRCore
