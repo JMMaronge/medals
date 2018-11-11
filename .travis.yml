@@ -44,4 +44,4 @@ before_install:
   - cat DESCRIPTION
   - install_remotes_no_dep
   - cat DESCRIPTION
-  - export PACKAGE_NAME=`package_name`# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+  - export PACKAGE_NAME=`medals`# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
