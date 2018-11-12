@@ -9,7 +9,7 @@ vignette: >
 
 The purpose of this vignette is to give an easy to understand tutorial on how to use my new package, medals! As you may know, my package is available [here](https://github.com/JMMaronge/medals). medals is a R package to implement a new method I've been working on for lesion segmentation, which I'm calling MEDALS: Memory Efficient Decomposition for Analysis of Local neighborhood moments for Segmentation.  
 
-For this vignette, we will use the medals package to train on two subjects with multimodal MRI (T1w, T2w, FLAIR, DWI).  Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then, every image is normalized using a trimmed normalization. We will analyze up to the 2nd order moment image. Then we will test the fitting on a separate subject.
+For this vignette, we will use the medals package to train on two subjects with multimodal MRI (FLAIR, DWI). Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then, every image is normalized using a trimmed normalization. We will analyze up to the 2nd order moment image. Then we will test the fitting on a separate subject.
 
 Before doing anything, we need to get our data in a particular form. We need a list of paths to MRI images, a list of paths to brain masks, and a list of paths to manual segmentations.  Below I show the structure of these lists. Images are denoted by image.file, brain masks by mask.file and manual segmentations by y.file. Notice that image.file is a list of sublists, each sublist is a list of imaging sequences for a particular subject. The orders of image.file, mask.file, and y.file should all match. We also need a vector of subject IDs.  The data I'm using is from the 2015 ISLES challenge, which is [here](http://www.isles-challenge.org/ISLES2015/).
 
@@ -24,13 +24,11 @@ y.file<-vector(length = length(subj), mode = "list")
 
 for(i in 1:length(subj)){
   imgs = file.path(datadir,
-                   paste0(c("flair", "t1", "t2", "dwi"),
+                   paste0(c("flair", "dwi"),
                           "TrimmedNormImg_Subject",
                           subj[i], ".nii.gz"))
   image.file[[i]][[1]] <- imgs[1]
   image.file[[i]][[2]] <- imgs[2]
-  image.file[[i]][[3]] <- imgs[3]
-  image.file[[i]][[4]] <- imgs[4]
   mask.file[[i]] <- file.path(datadir, paste0("brainmask_Subject", subj[i], ".nii.gz"))
   y.file[[i]] <- file.path(datadir, 
                            paste0("ymask_Subject", subj[i], ".nii.gz")
@@ -62,7 +60,7 @@ The first step is the computational workhorse of the package. The goal of this p
 library(medals)
 cp<-moment.cor.mat(path.img.list = image.file,
                    path.mask.list = mask.file,
-                   mpower = 2,
+                   mpower = 1,
                    verbose = TRUE)
 ```
 
@@ -126,13 +124,11 @@ test.y.file<-vector(length = length(test.subj), mode = "list")
 
 for(i in 1:length(test.subj)){
   imgs = file.path(datadir,
-                   paste0(c("flair", "t1", "t2", "dwi"),
+                   paste0(c("flair", "dwi"),
                           "TrimmedNormImg_Subject",
                           test.subj[i], ".nii.gz"))
   test.image.file[[i]][[1]] <- imgs[1]
   test.image.file[[i]][[2]] <- imgs[2]
-  test.image.file[[i]][[3]] <- imgs[3]
-  test.image.file[[i]][[4]] <- imgs[4]
   test.mask.file[[i]] <- file.path(datadir, 
                                    paste0("brainmask_Subject", test.subj[i], ".nii.gz"))
   test.y.file[[i]] <- file.path(datadir, 
