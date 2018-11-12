@@ -15,7 +15,7 @@ Before doing anything, we need to get our data in a particular form. We need a l
 
 ```{r, echo=TRUE}
 library(medals)
-datadir <- "../data/"
+datadir <- "../inst/extdata/"
 subj <- c("05","06")
 
 image.file<-vector(length = length(subj), mode = "list")
