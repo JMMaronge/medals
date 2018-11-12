@@ -146,8 +146,7 @@ print(test.subj)
 Now, we will use make.score.img() to make predictors for this new subject, but use the loading that we trained.
 
 ```{r,echo=TRUE,cache=TRUE}
-test.scores <-
-  scores <- make.score.img(
+  test.scores <- make.score.img(
   path.img.list = test.image.file,
   path.mask.list = test.mask.file,
   loads = loadings,  #training loadings matrix
