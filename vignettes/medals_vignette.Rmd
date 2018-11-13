@@ -9,7 +9,7 @@ vignette: >
 
 The purpose of this vignette is to give an easy to understand tutorial on how to use my new package, medals! As you may know, my package is available [here](https://github.com/JMMaronge/medals). medals is a R package to implement a new method I've been working on for lesion segmentation, which I'm calling MEDALS: Memory Efficient Decomposition for Analysis of Local neighborhood moments for Segmentation.  
 
-For this vignette, we will use the medals package to train on two subjects with multimodal MRI (FLAIR, DWI). Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then, every image is normalized using a trimmed normalization. We will analyze up to the 2nd order moment image. Then we will test the fitting on a separate subject.
+For this vignette, we will use the medals package to train on two subjects with multimodal MRI (FLAIR, DWI). Every subject's image is skull-stripped coregistered to the FLAIR, and smoothed. Then, every image is normalized using a trimmed normalization. We will analyze only the 1st order moment image. Then we will test the fitting on a separate subject.
 
 Before doing anything, we need to get our data in a particular form. We need a list of paths to MRI images, a list of paths to brain masks, and a list of paths to manual segmentations.  Below I show the structure of these lists. Images are denoted by image.file, brain masks by mask.file and manual segmentations by y.file. Notice that image.file is a list of sublists, each sublist is a list of imaging sequences for a particular subject. The orders of image.file, mask.file, and y.file should all match. We also need a vector of subject IDs.  The data I'm using is from the 2015 ISLES challenge, which is [here](http://www.isles-challenge.org/ISLES2015/).
 
@@ -73,7 +73,7 @@ pc.var(mat=cp$c.mat,n=cp$n)$var[1:8]
 pc.var(mat=cp$c.mat,n=cp$n)$cuml_pct[1:8]
 ```
 
-Since the first 8 PCs contain ~85% of the total variance explained in the original data, I'll choose to keep the first 8 PCs as predictors. I'll use the next function, get.loadings() to create the loadings matrix which will be used to rotate the original images into score images. I'll then use the function make.score.img() to create score images for each subject for each principal component. These will be used as predictors in the logistic regression model.
+For demonstration purposes, I will only use the first three PCs. In general one would want to use more PCs for segmentation I'll use the next function, get.loadings() to create the loadings matrix which will be used to rotate the original images into score images. I'll then use the function make.score.img() to create score images for each subject for each principal component. These will be used as predictors in the logistic regression model.
 
 ```{r,echo=TRUE,cache=TRUE}
 loadings <- get.loadings(cp$c.mat)
@@ -81,7 +81,7 @@ scores <- make.score.img(
   path.img.list = image.file,
   path.mask.list = mask.file,
   loads = loadings,
-  which.scores = 1:8
+  which.scores = 1:3
 )
 ```
 
@@ -150,7 +150,7 @@ Now, we will use make.score.img() to make predictors for this new subject, but u
   path.img.list = test.image.file,
   path.mask.list = test.mask.file,
   loads = loadings,  #training loadings matrix
-  which.scores = 1:8  #make sure this is the same as what your training set used
+  which.scores = 1:3  #make sure this is the same as what your training set used
 )
 ```
 
