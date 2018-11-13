@@ -16,7 +16,7 @@ cache:
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github hadley/devtools
+
 test_script:
   - travis-tool.sh run_tests
 
